@@ -1,2 +1,2 @@
-# Sravel_iOS
-Sravel iOS 앱 프로젝트
+# Sravel
+### 다양한 장소의 사진을 공유하는 지도 기반 iOS 앱 프로젝트

@@ -58,6 +58,8 @@
 		9CAABDA52817F91000DD780A /* Sravel */ = {
 			isa = PBXGroup;
 			children = (
+				9CAABDC32819173B00DD780A /* Application */,
+				9CAABDC42819175200DD780A /* Resource */,
 				9CAABDBE2819169F00DD780A /* Presentation */,
 				9CAABDAA2817F91000DD780A /* ViewController.swift */,
 			);
@@ -67,8 +69,6 @@
 		9CAABDBE2819169F00DD780A /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				9CAABDC42819175200DD780A /* Resource */,
-				9CAABDC32819173B00DD780A /* Application */,
 				9CAABDBF281916C300DD780A /* Home */,
 			);
 			path = Presentation;

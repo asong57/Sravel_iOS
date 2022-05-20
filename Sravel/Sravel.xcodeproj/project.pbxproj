@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		239EB584E435991A90B3D15E /* Pods_Sravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 73EA2119405A2A095112BFAE /* Pods_Sravel.framework */; };
+		1FFA589F514D32161EBD2FA3 /* Pods_Sravel.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D10FD2F08713B480C2E36025 /* Pods_Sravel.framework */; };
+		9C10BFD42837241F003F08E7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 9C10BFD32837241F003F08E7 /* GoogleService-Info.plist */; };
 		9C1B6DFF28338B6C003895F9 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C1B6DFE28338B6C003895F9 /* LoginViewModel.swift */; };
 		9C29A9832832861600EE24FE /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C29A9822832861600EE24FE /* LoginViewController.swift */; };
 		9C29A98728328C7900EE24FE /* UIColor+CustomColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9C29A98628328C7900EE24FE /* UIColor+CustomColor.swift */; };
@@ -21,8 +22,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		6E92874B9456C57674F5D443 /* Pods-Sravel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sravel.release.xcconfig"; path = "Target Support Files/Pods-Sravel/Pods-Sravel.release.xcconfig"; sourceTree = "<group>"; };
-		73EA2119405A2A095112BFAE /* Pods_Sravel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sravel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B2C29EEA7D3E8FEA4964313 /* Pods-Sravel.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sravel.release.xcconfig"; path = "Target Support Files/Pods-Sravel/Pods-Sravel.release.xcconfig"; sourceTree = "<group>"; };
+		9C10BFD32837241F003F08E7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../../Users/asong/Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		9C1B6DFE28338B6C003895F9 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		9C29A9822832861600EE24FE /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		9C29A98628328C7900EE24FE /* UIColor+CustomColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+CustomColor.swift"; sourceTree = "<group>"; };
@@ -35,7 +36,8 @@
 		9CAABDB22817F91300DD780A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9CAABDB42817F91300DD780A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9CAABDC0281916D300DD780A /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
-		A21E7DF7691AE10226337A5F /* Pods-Sravel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sravel.debug.xcconfig"; path = "Target Support Files/Pods-Sravel/Pods-Sravel.debug.xcconfig"; sourceTree = "<group>"; };
+		A197ED07A88D6E95F37289DB /* Pods-Sravel.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Sravel.debug.xcconfig"; path = "Target Support Files/Pods-Sravel/Pods-Sravel.debug.xcconfig"; sourceTree = "<group>"; };
+		D10FD2F08713B480C2E36025 /* Pods_Sravel.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Sravel.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,7 +45,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				239EB584E435991A90B3D15E /* Pods_Sravel.framework in Frameworks */,
+				1FFA589F514D32161EBD2FA3 /* Pods_Sravel.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -89,7 +91,7 @@
 				9CAABDA52817F91000DD780A /* Sravel */,
 				9CAABDA42817F91000DD780A /* Products */,
 				D32CD3223085CE55A967977E /* Pods */,
-				F9A4995211E4219C43D1C05A /* Frameworks */,
+				FF49FA937DD2564315D87401 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -104,6 +106,7 @@
 		9CAABDA52817F91000DD780A /* Sravel */ = {
 			isa = PBXGroup;
 			children = (
+				9C10BFD32837241F003F08E7 /* GoogleService-Info.plist */,
 				9C29A98528328C6400EE24FE /* Util */,
 				9CAABDB42817F91300DD780A /* Info.plist */,
 				9CAABDC32819173B00DD780A /* Application */,
@@ -161,16 +164,16 @@
 		D32CD3223085CE55A967977E /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				A21E7DF7691AE10226337A5F /* Pods-Sravel.debug.xcconfig */,
-				6E92874B9456C57674F5D443 /* Pods-Sravel.release.xcconfig */,
+				A197ED07A88D6E95F37289DB /* Pods-Sravel.debug.xcconfig */,
+				4B2C29EEA7D3E8FEA4964313 /* Pods-Sravel.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		F9A4995211E4219C43D1C05A /* Frameworks */ = {
+		FF49FA937DD2564315D87401 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				73EA2119405A2A095112BFAE /* Pods_Sravel.framework */,
+				D10FD2F08713B480C2E36025 /* Pods_Sravel.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -182,11 +185,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 9CAABDB72817F91300DD780A /* Build configuration list for PBXNativeTarget "Sravel" */;
 			buildPhases = (
-				0B0B6D1D314D35FFC43CF063 /* [CP] Check Pods Manifest.lock */,
+				DB8E7D06A455DCACAFA406A5 /* [CP] Check Pods Manifest.lock */,
 				9CAABD9F2817F91000DD780A /* Sources */,
 				9CAABDA02817F91000DD780A /* Frameworks */,
 				9CAABDA12817F91000DD780A /* Resources */,
-				23D596EC8A315C343A68E1F7 /* [CP] Embed Pods Frameworks */,
+				2361971BBADB5D7CE345857D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -236,6 +239,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9CAABDB32817F91300DD780A /* LaunchScreen.storyboard in Resources */,
+				9C10BFD42837241F003F08E7 /* GoogleService-Info.plist in Resources */,
 				9CAABDB02817F91300DD780A /* Assets.xcassets in Resources */,
 				9CAABDAE2817F91100DD780A /* Main.storyboard in Resources */,
 			);
@@ -244,7 +248,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		0B0B6D1D314D35FFC43CF063 /* [CP] Check Pods Manifest.lock */ = {
+		2361971BBADB5D7CE345857D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sravel/Pods-Sravel-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Sravel/Pods-Sravel-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sravel/Pods-Sravel-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		DB8E7D06A455DCACAFA406A5 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -264,23 +285,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		23D596EC8A315C343A68E1F7 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Sravel/Pods-Sravel-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Sravel/Pods-Sravel-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Sravel/Pods-Sravel-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -440,7 +444,7 @@
 		};
 		9CAABDB82817F91300DD780A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A21E7DF7691AE10226337A5F /* Pods-Sravel.debug.xcconfig */;
+			baseConfigurationReference = A197ED07A88D6E95F37289DB /* Pods-Sravel.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -470,7 +474,7 @@
 		};
 		9CAABDB92817F91300DD780A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6E92874B9456C57674F5D443 /* Pods-Sravel.release.xcconfig */;
+			baseConfigurationReference = 4B2C29EEA7D3E8FEA4964313 /* Pods-Sravel.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

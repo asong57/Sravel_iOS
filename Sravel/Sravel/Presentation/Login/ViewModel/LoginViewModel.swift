@@ -36,7 +36,13 @@ class LoginViewModel {
     private func configureInput(_ input: Input, disposeBag: DisposeBag) {
         input.emailTextFieldDidEditEvent
             .subscribe(onNext: { [weak self] email in
-                self?.loginUseCase.validate(text: email)
+                self?.loginUseCase.setEmail(email)
+            })
+            .disposed(by: disposeBag)
+        
+        input.passwordTextFieldDidEditEvent
+            .subscribe(onNext: { [weak self] password in
+                self?.loginUseCase.validatePassword(text: password)
             })
             .disposed(by: disposeBag)
         
@@ -45,7 +51,7 @@ class LoginViewModel {
     private func createOutput(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        self.loginUseCase.emailValidationState
+        self.loginUseCase.passwordValidationState
             .subscribe(onNext: { state in
                 output.validationErrorMessage.accept(state.description)
                 output.loginButtonShouldEnable.accept(state == true)
@@ -56,5 +62,4 @@ class LoginViewModel {
         
         return output
     }
-    
 }

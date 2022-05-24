@@ -11,31 +11,27 @@ import RxSwift
 class LoginUseCase{
     var email: String = ""
     var password: String = ""
-    var emailValidationState = BehaviorSubject<Bool>(value: false)
+    var passwordValidationState = BehaviorSubject<Bool>(value: false)
     
-    func validate(text: String) {
+    func setEmail(_ text: String){
         self.email = text
+    }
+    
+    func validatePassword(text: String) {
+        self.password = text
         self.updateValidationState(of: text)
     }
     
-    private func updateValidationState(of emailText: String) {
-        guard !emailText.isEmpty else {
-            self.emailValidationState.onNext(false)
+    private func updateValidationState(of passwordText: String) {
+        guard !passwordText.isEmpty else {
+            self.passwordValidationState.onNext(false)
             return
         }
-        guard emailText.count >= 5 else {
-            self.emailValidationState.onNext(false)
-            return
-        }
-        guard emailText.count <= 20 else {
-            self.emailValidationState.onNext(false)
-            return
-        }
-        guard emailText.range(of: "[^a-zA-Z0-9]", options: .regularExpression) == nil else {
-            self.emailValidationState.onNext(false)
+        guard passwordText.count >= 6 else {
+            self.passwordValidationState.onNext(false)
             return
         }
         
-        self.emailValidationState.onNext(true)
+        self.passwordValidationState.onNext(true)
     }
 }

@@ -37,12 +37,14 @@ class LoginViewModel {
         input.emailTextFieldDidEditEvent
             .subscribe(onNext: { [weak self] email in
                 self?.loginUseCase.setEmail(email)
+                print(email)
             })
             .disposed(by: disposeBag)
         
         input.passwordTextFieldDidEditEvent
             .subscribe(onNext: { [weak self] password in
                 self?.loginUseCase.validatePassword(text: password)
+                print(password)
             })
             .disposed(by: disposeBag)
         
@@ -53,10 +55,14 @@ class LoginViewModel {
         
         self.loginUseCase.passwordValidationState
             .subscribe(onNext: { state in
-                output.validationErrorMessage.accept(state.description)
                 output.loginButtonShouldEnable.accept(state == true)
+                print(state)
             })
             .disposed(by: disposeBag)
+        
+        self.loginUseCase.errorMessage.subscribe(onNext: {message in
+            output.validationErrorMessage.accept(message)
+        })
         
         //self.bindSignUp(from: input, with: output, disposeBag: disposeBag)
         

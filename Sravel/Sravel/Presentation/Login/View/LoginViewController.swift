@@ -120,8 +120,10 @@ extension LoginViewController{
     
     func bindViewModel(){
         let input = LoginViewModel.Input(emailTextFieldDidEditEvent: emailTextField.rx.text.orEmpty.asObservable(), passwordTextFieldDidEditEvent: passwordTextField.rx.text.orEmpty.asObservable(), loginButtonDidTapEvent: self.loginButton.rx.tap.asObservable())
+        
         // viewModel init 부분을 Presentation view에서 UseCase생성할 수 있지만 Coordinator 쪽에서 생성하는게 나을 수 있다.
-        self.viewModel = LoginViewModel(loginUseCase: LoginUseCase())
+        self.viewModel = LoginViewModel(coordinator: LoginCoordinator(self.navigationController!), loginUseCase: LoginUseCase())
+        
         let output = self.viewModel?.transform(from: input, disposeBag: self.disposeBag)
         self.bindErrorMessageLabel(output: output)
         self.bindLoginButton(output: output)

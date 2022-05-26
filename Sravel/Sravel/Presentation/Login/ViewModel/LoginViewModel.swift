@@ -8,10 +8,12 @@
 import Foundation
 import RxSwift
 import RxRelay
+import UIKit
 
 class LoginViewModel {
     private let disposeBag = DisposeBag()
     private let loginUseCase: LoginUseCase
+    weak var coordinator: LoginCoordinator?
     
     struct Input {
         let emailTextFieldDidEditEvent: Observable<String>
@@ -24,12 +26,21 @@ class LoginViewModel {
         var loginButtonShouldEnable = BehaviorRelay<Bool>(value: false)
     }
     
-    init(loginUseCase: LoginUseCase){
+    init(coordinator: LoginCoordinator, loginUseCase: LoginUseCase){
+        self.coordinator = coordinator
         self.loginUseCase = loginUseCase
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         self.configureInput(input, disposeBag: disposeBag)
+        
+        input.loginButtonDidTapEvent
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else {return }
+                self.coordinator?.goToSignUp()
+                print(self.coordinator)
+                print("tap")
+            })
         return createOutput(from: input, disposeBag: disposeBag)
     }
     

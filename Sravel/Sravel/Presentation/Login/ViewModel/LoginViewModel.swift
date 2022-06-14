@@ -8,12 +8,10 @@
 import Foundation
 import RxSwift
 import RxRelay
-import UIKit
 
 class LoginViewModel {
     private let disposeBag = DisposeBag()
-    private let loginUseCase: LoginUseCase
-    weak var coordinator: LoginCoordinator?
+    private let loginUseCase: LoginUseCase = LoginUseCase()
     
     struct Input {
         let emailTextFieldDidEditEvent: Observable<String>
@@ -24,11 +22,7 @@ class LoginViewModel {
     struct Output {
         var validationErrorMessage = BehaviorRelay<String?>(value: nil)
         var loginButtonShouldEnable = BehaviorRelay<Bool>(value: false)
-    }
-    
-    init(coordinator: LoginCoordinator, loginUseCase: LoginUseCase){
-        self.coordinator = coordinator
-        self.loginUseCase = loginUseCase
+        var isLoginSuccessed = BehaviorRelay<Bool>(value: false)
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -36,9 +30,6 @@ class LoginViewModel {
         
         input.loginButtonDidTapEvent
             .subscribe(onNext: { [weak self] _ in
-                guard let self = self else {return }
-                self.coordinator?.goToSignUp()
-                print(self.coordinator)
                 print("tap")
             })
         return createOutput(from: input, disposeBag: disposeBag)
@@ -68,6 +59,8 @@ class LoginViewModel {
             .subscribe(onNext: { state in
                 output.loginButtonShouldEnable.accept(state == true)
                 print(state)
+                // 추후에 유스케이스에서 로그인 성공 얻어오는 곳으로 이동시키기
+                output.isLoginSuccessed.accept(state == true)
             })
             .disposed(by: disposeBag)
         

@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 final class LoginViewController: UIViewController {
-    var viewModel: LoginViewModel?
+    var viewModel: LoginViewModel = LoginViewModel()
     private var disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -19,6 +19,7 @@ final class LoginViewController: UIViewController {
         self.configureSubViews()
         self.congifureUI()
         self.bindViewModel()
+        self.moveToSignUpViewController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -121,12 +122,10 @@ extension LoginViewController{
     func bindViewModel(){
         let input = LoginViewModel.Input(emailTextFieldDidEditEvent: emailTextField.rx.text.orEmpty.asObservable(), passwordTextFieldDidEditEvent: passwordTextField.rx.text.orEmpty.asObservable(), loginButtonDidTapEvent: self.loginButton.rx.tap.asObservable())
         
-        // viewModel init 부분을 Presentation view에서 UseCase생성할 수 있지만 Coordinator 쪽에서 생성하는게 나을 수 있다.
-        self.viewModel = LoginViewModel(coordinator: LoginCoordinator(self.navigationController!), loginUseCase: LoginUseCase())
-        
-        let output = self.viewModel?.transform(from: input, disposeBag: self.disposeBag)
+        let output = self.viewModel.transform(from: input, disposeBag: self.disposeBag)
         self.bindErrorMessageLabel(output: output)
         self.bindLoginButton(output: output)
+        self.moveToHomeViewController(output: output)
     }
     
     func bindErrorMessageLabel(output: LoginViewModel.Output?){
@@ -142,7 +141,32 @@ extension LoginViewController{
             .asDriver(onErrorJustReturn: false)
             .drive(onNext: { [weak self] isValid in
                 self?.loginButton.isEnabled = isValid
-                self?.loginButton.backgroundColor = isValid ? .blue : .lightBlue 
+                self?.loginButton.backgroundColor = isValid ? .blue : .lightBlue
+            }).disposed(by: disposeBag)
+    }
+}
+extension LoginViewController{
+    func moveToHomeViewController(output: LoginViewModel.Output?){
+        output?.isLoginSuccessed.take(1).asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] isValid in
+                if isValid{
+                    let homeVC = HomeViewController()
+                    homeVC.view.backgroundColor = .white
+                    self?.navigationController!.navigationBar.isHidden = true
+                    self?.navigationController!.pushViewController(homeVC, animated: true)
+                }
+            }).disposed(by: disposeBag)
+    }
+    
+    func moveToSignUpViewController(){
+        signUpButton.rx.tap
+            .throttle(.seconds(2), scheduler: MainScheduler.instance)
+            .subscribe(onNext:  { [weak self] in
+                let signUpVC = SignUpViewController()
+                signUpVC.view.backgroundColor = .white
+                self?.navigationController?.navigationBar.tintColor = .black
+                self?.navigationController?.navigationBar.topItem?.title = ""
+                self?.navigationController?.pushViewController(signUpVC, animated: true)
             }).disposed(by: disposeBag)
     }
 }

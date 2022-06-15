@@ -11,7 +11,7 @@ import RxRelay
 
 class LoginViewModel {
     private let disposeBag = DisposeBag()
-    private let loginUseCase: LoginUseCase = LoginUseCase()
+    private let loginUseCase = LoginUseCase()
     
     struct Input {
         let emailTextFieldDidEditEvent: Observable<String>
@@ -30,7 +30,6 @@ class LoginViewModel {
         
         input.loginButtonDidTapEvent
             .subscribe(onNext: { [weak self] _ in
-                print("tap")
             })
         return createOutput(from: input, disposeBag: disposeBag)
     }
@@ -39,17 +38,19 @@ class LoginViewModel {
         input.emailTextFieldDidEditEvent
             .subscribe(onNext: { [weak self] email in
                 self?.loginUseCase.setEmail(email)
-                print(email)
             })
             .disposed(by: disposeBag)
         
         input.passwordTextFieldDidEditEvent
             .subscribe(onNext: { [weak self] password in
                 self?.loginUseCase.validatePassword(text: password)
-                print(password)
             })
             .disposed(by: disposeBag)
         
+        input.loginButtonDidTapEvent
+            .subscribe(onNext: { [weak self] _ in
+                self?.loginUseCase.login()
+            })
     }
     
     private func createOutput(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -59,13 +60,16 @@ class LoginViewModel {
             .subscribe(onNext: { state in
                 output.loginButtonShouldEnable.accept(state == true)
                 print(state)
-                // 추후에 유스케이스에서 로그인 성공 얻어오는 곳으로 이동시키기
-                output.isLoginSuccessed.accept(state == true)
+                
             })
             .disposed(by: disposeBag)
         
         self.loginUseCase.errorMessage.subscribe(onNext: {message in
             output.validationErrorMessage.accept(message)
+        })
+        
+        self.loginUseCase.isLoginSuccessed.subscribe(onNext: {isSuccessful in
+            output.isLoginSuccessed.accept(isSuccessful == true)
         })
         
         //self.bindSignUp(from: input, with: output, disposeBag: disposeBag)

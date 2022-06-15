@@ -147,7 +147,7 @@ extension LoginViewController{
 }
 extension LoginViewController{
     func moveToHomeViewController(output: LoginViewModel.Output?){
-        output?.isLoginSuccessed.take(1).asDriver(onErrorJustReturn: false)
+        output?.isLoginSuccessed.asDriver(onErrorJustReturn: false)
             .drive(onNext: { [weak self] isValid in
                 if isValid{
                     let homeVC = HomeViewController()

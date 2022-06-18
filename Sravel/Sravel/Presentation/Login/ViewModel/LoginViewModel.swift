@@ -11,7 +11,7 @@ import RxRelay
 
 class LoginViewModel {
     private let disposeBag = DisposeBag()
-    private let loginUseCase = LoginUseCase()
+    private let loginUseCase: LoginUseCase
     
     struct Input {
         let emailTextFieldDidEditEvent: Observable<String>
@@ -23,6 +23,10 @@ class LoginViewModel {
         var validationErrorMessage = BehaviorRelay<String?>(value: nil)
         var loginButtonShouldEnable = BehaviorRelay<Bool>(value: false)
         var isLoginSuccessed = BehaviorRelay<Bool>(value: false)
+    }
+    
+    init(loginUseCase: LoginUseCase){
+        self.loginUseCase = loginUseCase
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -37,19 +41,23 @@ class LoginViewModel {
     private func configureInput(_ input: Input, disposeBag: DisposeBag) {
         input.emailTextFieldDidEditEvent
             .subscribe(onNext: { [weak self] email in
-                self?.loginUseCase.setEmail(email)
+                guard let self = self else{return}
+                self.loginUseCase.setEmail(email)
             })
             .disposed(by: disposeBag)
         
         input.passwordTextFieldDidEditEvent
             .subscribe(onNext: { [weak self] password in
-                self?.loginUseCase.validatePassword(text: password)
+                guard let self = self else{return}
+                self.loginUseCase.validatePassword(text: password)
             })
             .disposed(by: disposeBag)
         
         input.loginButtonDidTapEvent
             .subscribe(onNext: { [weak self] _ in
-                self?.loginUseCase.login()
+                guard let self = self else{return}
+                print("tap")
+                self.loginUseCase.login()
             })
     }
     
@@ -60,7 +68,6 @@ class LoginViewModel {
             .subscribe(onNext: { state in
                 output.loginButtonShouldEnable.accept(state == true)
                 print(state)
-                
             })
             .disposed(by: disposeBag)
         

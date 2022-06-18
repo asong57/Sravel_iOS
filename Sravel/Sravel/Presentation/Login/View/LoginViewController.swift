@@ -11,7 +11,7 @@ import RxSwift
 import RxCocoa
 
 final class LoginViewController: UIViewController {
-    var viewModel: LoginViewModel = LoginViewModel()
+    var viewModel: LoginViewModel?
     private var disposeBag = DisposeBag()
     
     override func viewDidLoad() {
@@ -24,6 +24,12 @@ final class LoginViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+    }
+    
+    static func create(with viewModel: LoginViewModel) -> LoginViewController{
+        let view = LoginViewController()
+        view.viewModel = viewModel
+        return view
     }
     
     private lazy var loginLabel: UILabel = {
@@ -121,8 +127,8 @@ extension LoginViewController{
     
     func bindViewModel(){
         let input = LoginViewModel.Input(emailTextFieldDidEditEvent: emailTextField.rx.text.orEmpty.asObservable(), passwordTextFieldDidEditEvent: passwordTextField.rx.text.orEmpty.asObservable(), loginButtonDidTapEvent: self.loginButton.rx.tap.asObservable())
-        
-        let output = self.viewModel.transform(from: input, disposeBag: self.disposeBag)
+        guard let viewModel = self.viewModel else{return}
+        let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
         self.bindErrorMessageLabel(output: output)
         self.bindLoginButton(output: output)
         self.moveToHomeViewController(output: output)

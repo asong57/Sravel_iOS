@@ -7,7 +7,6 @@
 
 import Foundation
 import RxSwift
-import Firebase
 
 class LoginUseCase{
     var email: String = ""
@@ -15,6 +14,11 @@ class LoginUseCase{
     var passwordValidationState = BehaviorSubject<Bool>(value: false)
     var errorMessage = BehaviorSubject<String>(value: "")
     var isLoginSuccessed = PublishSubject<Bool>()
+    private let repository: LoginRepository
+    
+    init(repository: LoginRepository){
+        self.repository = repository
+    }
     
     func setEmail(_ text: String){
         self.email = text
@@ -41,13 +45,13 @@ class LoginUseCase{
     }
     
     func login(){
-        Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
-            if user != nil{
-                // DatabaseNetwork.shared.setUid()
-                self.isLoginSuccessed.onNext(true)
-            }else{
+        self.repository.loginFirebase(email: email, password: password)
+            .subscribe(onNext: { isSuccessed in
+                if isSuccessed{
+                    self.isLoginSuccessed.onNext(true)
+                }
+            }, onError: { _ in
                 self.errorMessage.onNext("로그인에 실패했습니다.")
-            }
-        }
+            })
     }
 }

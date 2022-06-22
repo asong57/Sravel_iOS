@@ -19,8 +19,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let navigationController = UINavigationController()
         
         self.window = UIWindow(windowScene: windowScene)
+        navigationController.view.backgroundColor = .white
         self.window?.rootViewController = navigationController
-        window?.tintColor = .white
+        
         appFlowCoordinator = AppFlowCoordinator(navigationController: navigationController, appDIContainer: appDIContainer)
         appFlowCoordinator?.start()
         

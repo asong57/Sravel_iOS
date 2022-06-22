@@ -12,6 +12,7 @@ import RxRelay
 class SignUpViewModel {
     private let disposeBag = DisposeBag()
     private let signUpUseCase: SignUpUseCase
+    var coordinator: SignUpFlowCoordinator
     
     struct Input {
         let nameTextFieldDidEditEvent: Observable<String>
@@ -27,7 +28,8 @@ class SignUpViewModel {
         var isRegisterSuccessed = BehaviorRelay<Bool>(value: false)
     }
     
-    init(signUpUseCase: SignUpUseCase){
+    init(coordinator: SignUpFlowCoordinator, signUpUseCase: SignUpUseCase){
+        self.coordinator = coordinator
         self.signUpUseCase = signUpUseCase
     }
     
@@ -90,8 +92,10 @@ class SignUpViewModel {
             output.validationErrorMessage.accept(message)
         }).disposed(by: disposeBag)
         
-        self.signUpUseCase.isRegisterSuccessed.subscribe(onNext: {isSuccessful in
-            output.isRegisterSuccessed.accept(isSuccessful == true)
+        self.signUpUseCase.isRegisterSuccessed.subscribe(onNext: {[weak self] isSuccessful in
+            if isSuccessful{
+                self?.coordinator.moveToLoginViewController()
+            }
         }).disposed(by: disposeBag)
         
         return output

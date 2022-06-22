@@ -10,6 +10,7 @@ import RxSwift
 import RxRelay
 
 class LoginViewModel {
+    var coordinator: LoginFlowCoordinator
     private let disposeBag = DisposeBag()
     private let loginUseCase: LoginUseCase
     
@@ -17,6 +18,7 @@ class LoginViewModel {
         let emailTextFieldDidEditEvent: Observable<String>
         let passwordTextFieldDidEditEvent: Observable<String>
         let loginButtonDidTapEvent: Observable<Void>
+        let registerButtonDidTapEvent: Observable<Void>
     }
     
     struct Output {
@@ -25,7 +27,8 @@ class LoginViewModel {
         var isLoginSuccessed = BehaviorRelay<Bool>(value: false)
     }
     
-    init(loginUseCase: LoginUseCase){
+    init(coordinator: LoginFlowCoordinator,loginUseCase: LoginUseCase){
+        self.coordinator = coordinator
         self.loginUseCase = loginUseCase
     }
     
@@ -35,6 +38,13 @@ class LoginViewModel {
         input.loginButtonDidTapEvent
             .subscribe(onNext: { [weak self] _ in
             })
+        
+        input.registerButtonDidTapEvent
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else{ return }
+                self.coordinator.moveToSignUpViewController()
+            })
+        
         return createOutput(from: input, disposeBag: disposeBag)
     }
     

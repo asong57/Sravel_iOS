@@ -17,7 +17,13 @@ class LoginFlowCoordinator{
     }
     
     func start(){
-        let vc = loginDIContainer.makeLoginViewController()
+        let vc = loginDIContainer.makeLoginViewController(coordinator: self)
         navigationController?.pushViewController(vc, animated: false)
+    }
+    
+    func moveToSignUpViewController(){
+        let signUpDIContainer = SignUpDIContainer()
+        var signUpCoordinator = SignUpFlowCoordinator(navigationController: navigationController!, signUpDIContainer: signUpDIContainer)
+        signUpCoordinator.start()
     }
 }

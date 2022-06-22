@@ -51,9 +51,6 @@ class SignUpUseCase{
             self.errorMessage.onNext("비밀번호는 6자리 이상으로 입력해주세요.")
             return
         }
-        
-        self.passwordValidationState.onNext(true)
-        self.errorMessage.onNext("")
     }
     
     private func validatePasswordForCheck(){

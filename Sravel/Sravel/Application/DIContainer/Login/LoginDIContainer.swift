@@ -5,7 +5,6 @@
 //  Created by asong on 2022/06/18.
 //
 
-import Foundation
 import UIKit
 
 final class LoginDIContainer{
@@ -21,12 +20,12 @@ final class LoginDIContainer{
     }
     
     // MARK: - Login View
-    func makeLoginViewModel() -> LoginViewModel{
-        return LoginViewModel(loginUseCase: makeLoginUseCase())
+    func makeLoginViewModel(coordinator: LoginFlowCoordinator) -> LoginViewModel{
+        return LoginViewModel(coordinator: coordinator, loginUseCase: makeLoginUseCase())
     }
     
-    func makeLoginViewController() -> UIViewController{
-        return LoginViewController.create(with: makeLoginViewModel())
+    func makeLoginViewController(coordinator: LoginFlowCoordinator) -> UIViewController{
+        return LoginViewController.create(with: makeLoginViewModel(coordinator: coordinator))
     }
     
     // MARK: - Flow Coordinators

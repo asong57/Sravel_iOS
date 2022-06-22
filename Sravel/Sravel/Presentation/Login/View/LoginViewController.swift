@@ -19,7 +19,6 @@ final class LoginViewController: UIViewController {
         self.configureSubViews()
         self.congifureUI()
         self.bindViewModel()
-        self.moveToSignUpViewController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -126,7 +125,7 @@ extension LoginViewController{
     }
     
     func bindViewModel(){
-        let input = LoginViewModel.Input(emailTextFieldDidEditEvent: emailTextField.rx.text.orEmpty.asObservable(), passwordTextFieldDidEditEvent: passwordTextField.rx.text.orEmpty.asObservable(), loginButtonDidTapEvent: self.loginButton.rx.tap.asObservable())
+        let input = LoginViewModel.Input(emailTextFieldDidEditEvent: emailTextField.rx.text.orEmpty.asObservable(), passwordTextFieldDidEditEvent: passwordTextField.rx.text.orEmpty.asObservable(), loginButtonDidTapEvent: self.loginButton.rx.tap.asObservable(), registerButtonDidTapEvent: signUpButton.rx.tap.asObservable())
         guard let viewModel = self.viewModel else{return}
         let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
         self.bindErrorMessageLabel(output: output)
@@ -160,18 +159,6 @@ extension LoginViewController{
                     homeVC.view.backgroundColor = .white
                     self?.navigationController!.pushViewController(homeVC, animated: true)
                 }
-            }).disposed(by: disposeBag)
-    }
-    
-    func moveToSignUpViewController(){
-        signUpButton.rx.tap
-            .throttle(.seconds(2), scheduler: MainScheduler.instance)
-            .subscribe(onNext:  { [weak self] in
-                let signUpVC = SignUpViewController()
-                signUpVC.view.backgroundColor = .white
-                self?.navigationController?.navigationBar.tintColor = .black
-                self?.navigationController?.navigationBar.topItem?.title = ""
-                self?.navigationController?.pushViewController(signUpVC, animated: true)
             }).disposed(by: disposeBag)
     }
 }

@@ -25,6 +25,12 @@ final class SignUpViewController: UIViewController {
         super.viewWillAppear(animated)
     }
     
+    static func create(with viewModel: SignUpViewModel) -> SignUpViewController{
+        let view = SignUpViewController()
+        view.viewModel = viewModel
+        return view
+    }
+    
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "회원가입"

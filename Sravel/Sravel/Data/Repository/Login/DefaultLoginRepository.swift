@@ -12,9 +12,12 @@ class DefaultLoginRepository: LoginRepository{
     func loginFirebase(email: String, password: String) -> Observable<Bool> {
         return Observable.create { observable in
             FireStoreDatabase.fireStoreDatabase.loginFirebase(email: email, password: password)
-                .do(onSuccess: { isSuccessed in
-                    observable.onNext(true)
-                })
+                .subscribe(onNext: { isSuccessed in
+                    if isSuccessed{
+                        observable.onNext(true)
+                    }
+                }
+                )
             return Disposables.create()
         }
     }

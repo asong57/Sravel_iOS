@@ -15,6 +15,7 @@ class LoginUseCase{
     var errorMessage = BehaviorSubject<String>(value: "")
     var isLoginSuccessed = PublishSubject<Bool>()
     private let repository: LoginRepository
+    private let disposeBag = DisposeBag()
     
     init(repository: LoginRepository){
         self.repository = repository
@@ -45,6 +46,7 @@ class LoginUseCase{
     }
     
     func login(){
+        print("usecase login() \(email)")
         self.repository.loginFirebase(email: email, password: password)
             .subscribe(onNext: { isSuccessed in
                 if isSuccessed{
@@ -52,6 +54,6 @@ class LoginUseCase{
                 }
             }, onError: { _ in
                 self.errorMessage.onNext("로그인에 실패했습니다.")
-            })
+            }).disposed(by: disposeBag)
     }
 }

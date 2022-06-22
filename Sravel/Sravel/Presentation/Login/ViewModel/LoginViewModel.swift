@@ -56,7 +56,6 @@ class LoginViewModel {
         input.loginButtonDidTapEvent
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else{return}
-                print("tap")
                 self.loginUseCase.login()
             })
     }
@@ -78,8 +77,6 @@ class LoginViewModel {
         self.loginUseCase.isLoginSuccessed.subscribe(onNext: {isSuccessful in
             output.isLoginSuccessed.accept(isSuccessful == true)
         })
-        
-        //self.bindSignUp(from: input, with: output, disposeBag: disposeBag)
         
         return output
     }

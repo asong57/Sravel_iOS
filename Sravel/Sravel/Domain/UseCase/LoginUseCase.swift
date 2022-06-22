@@ -46,7 +46,6 @@ class LoginUseCase{
     }
     
     func login(){
-        print("usecase login() \(email)")
         self.repository.loginFirebase(email: email, password: password)
             .subscribe(onNext: { isSuccessed in
                 if isSuccessed{

@@ -26,4 +26,12 @@ class FireStoreDatabase{
             return Disposables.create()
         }
     }
+    
+    func registerUserInfo(name: String, email: String, password: String) -> Observable<Bool>{
+        return Observable.create{observer -> Disposable in
+            // 회원가입 로직 추가
+                observer.onNext(true)
+            return Disposables.create()
+        }
+    }
 }

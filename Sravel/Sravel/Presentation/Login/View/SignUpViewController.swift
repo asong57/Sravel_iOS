@@ -11,12 +11,14 @@ import RxSwift
 import RxCocoa
 
 final class SignUpViewController: UIViewController {
+    var viewModel: SignUpViewModel?
     private var disposeBag = DisposeBag()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureSubViews()
         self.congifureUI()
+        self.bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -130,5 +132,30 @@ extension SignUpViewController{
             make.centerX.equalToSuperview()
             make.top.equalTo(signUpButton.snp.bottom).offset(20)
         }
+    }
+    
+    func bindViewModel(){
+        let input = SignUpViewModel.Input(nameTextFieldDidEditEvent: nameTextField.rx.text.orEmpty.asObservable(), emailTextFieldDidEditEvent: emailTextField.rx.text.orEmpty.asObservable(), passwordTextFieldDidEditEvent: passwordTextField.rx.text.orEmpty.asObservable(), passwordForCheckTextFieldDidEditEvent: passwordCheckTextField.rx.text.orEmpty.asObservable(), registerButtonDidTapEvent: signUpButton.rx.tap.asObservable())
+        guard let viewModel = self.viewModel else{return}
+        let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
+        self.bindErrorMessageLabel(output: output)
+        self.bindLoginButton(output: output)
+    }
+    
+    func bindErrorMessageLabel(output: SignUpViewModel.Output?){
+        output?.validationErrorMessage
+            .asDriver()
+            .drive(onNext: {[weak self] message in
+                self?.errorMessageLabel.text = message
+            }).disposed(by: disposeBag)
+    }
+    
+    func bindLoginButton(output: SignUpViewModel.Output?){
+        output?.registerButtonShouldEnable
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] isValid in
+                self?.signUpButton.isEnabled = isValid
+                self?.signUpButton.backgroundColor = isValid ? .blue : .lightBlue
+            }).disposed(by: disposeBag)
     }
 }

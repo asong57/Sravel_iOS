@@ -158,7 +158,6 @@ extension LoginViewController{
                 if isValid{
                     let homeVC = HomeViewController()
                     homeVC.view.backgroundColor = .white
-                    self?.navigationController!.navigationBar.isHidden = true
                     self?.navigationController!.pushViewController(homeVC, animated: true)
                 }
             }).disposed(by: disposeBag)

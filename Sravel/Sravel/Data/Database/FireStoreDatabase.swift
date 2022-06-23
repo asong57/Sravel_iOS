@@ -15,6 +15,9 @@ class FireStoreDatabase{
     
     func loginFirebase(email: String, password: String) -> Observable<Bool>{
         return Observable.create{observer -> Disposable in
+            observer.onNext(true)
+            // 일단 다른 로직들 다 구현 후 돌려놓기
+            /*
             Auth.auth().signIn(withEmail: email, password: password) { (user, error) in
                 if user != nil{
                     // DatabaseNetwork.shared.setUid()
@@ -22,7 +25,7 @@ class FireStoreDatabase{
                 }else{
                     observer.onNext(false)
                 }
-            }
+            }*/
             return Disposables.create()
         }
     }

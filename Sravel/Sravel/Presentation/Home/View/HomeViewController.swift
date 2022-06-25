@@ -9,6 +9,7 @@ import UIKit
 import SnapKit
 import RxSwift
 import RxCocoa
+import GoogleMaps
 
 final class HomeViewController: UIViewController {
     private var disposeBag = DisposeBag()
@@ -19,6 +20,7 @@ final class HomeViewController: UIViewController {
         self.configureSubViews()
         self.congifureUI()
         self.setNavigationBar()
+        self.setGoogleMap()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -147,6 +149,25 @@ extension HomeViewController{
     func configureSubViews() {
         view.addSubview(scrollView)
         scrollView.addSubview(stackView)
+    }
+    
+    func setGoogleMap(){
+        let camera = GMSCameraPosition.camera(withLatitude: 37.566508, longitude: 126.977945, zoom: 16.0)
+        let mapView = GMSMapView.map(withFrame: self.view.frame, camera: camera)
+        self.view.addSubview(mapView)
+        
+        mapView.snp.makeConstraints{ make in
+            make.bottom.equalTo(self.view).offset(-5)
+            make.top.equalTo(self.scrollView.snp.bottom).offset(5)
+            make.left.right.equalTo(self.view)
+        }
+        
+        // Creates a marker in the center of the map.
+        let marker = GMSMarker()
+        marker.position = CLLocationCoordinate2D(latitude: 37.566508, longitude: 126.977945)
+        marker.title = "Sydney"
+        marker.snippet = "South Korea"
+        marker.map = mapView
     }
     
     func congifureUI(){

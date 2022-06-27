@@ -13,14 +13,17 @@ import GoogleMaps
 
 final class HomeViewController: UIViewController {
     private var disposeBag = DisposeBag()
-    private var presentLocation: String = "광주"
+    private var presentLocation: String = "광주광역시 북구 용봉동 147"
+    private var mapView: GMSMapView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureSubViews()
         self.congifureUI()
         self.setNavigationBar()
-        self.setGoogleMap()
+        self.setPresentLocation()
+        self.setMarkers()
+        self.moveToPlusViewController()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -151,25 +154,6 @@ extension HomeViewController{
         scrollView.addSubview(stackView)
     }
     
-    func setGoogleMap(){
-        let camera = GMSCameraPosition.camera(withLatitude: 37.566508, longitude: 126.977945, zoom: 16.0)
-        let mapView = GMSMapView.map(withFrame: self.view.frame, camera: camera)
-        self.view.addSubview(mapView)
-        
-        mapView.snp.makeConstraints{ make in
-            make.bottom.equalTo(self.view).offset(-5)
-            make.top.equalTo(self.scrollView.snp.bottom).offset(5)
-            make.left.right.equalTo(self.view)
-        }
-        
-        // Creates a marker in the center of the map.
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: 37.566508, longitude: 126.977945)
-        marker.title = "Sydney"
-        marker.snippet = "South Korea"
-        marker.map = mapView
-    }
-    
     func congifureUI(){
         streetButton.snp.makeConstraints{ make in
             make.width.equalTo(70)
@@ -240,11 +224,84 @@ extension HomeViewController{
         self.navigationItem.setHidesBackButton(true, animated:false)
         let view = UIView(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
         let imageView = UIImageView(frame: CGRect(x: 10, y: 10, width: 20, height: 20))
-        if let img = UIImage(named: "fullheart") {
+        if let img = UIImage(named: "search") {
             imageView.image = img
         }
         view.addSubview(imageView)
         let rightBarButtonItem = UIBarButtonItem(customView: view ?? UIView())
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
+    }
+}
+extension HomeViewController: CLLocationManagerDelegate{
+    func setPresentLocation(){
+        
+        var locationManager: CLLocationManager!
+        // 현재 위치 가져오기
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        
+        // 앱이 실행될 때 위치 추적 권한 요청
+        locationManager.requestWhenInUseAuthorization()
+        // 배터리에 맞게 권장되는 최적의 정확도
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        // 위치 업데이트
+        locationManager.startUpdatingLocation()
+        
+        // 위, 경도 가져오기
+        let coor = locationManager.location?.coordinate
+        
+        let latitude = (coor?.latitude ?? 37.566508) as Double
+        let longitude = (coor?.longitude ?? 126.977945) as Double
+        print("\(latitude)")
+        
+        let camera = GMSCameraPosition.camera(withLatitude: 37.566508, longitude: 126.977945, zoom: 16.0)
+        mapView = GMSMapView.map(withFrame: self.view.frame, camera: camera)
+        self.view.addSubview(mapView!)
+        
+        mapView!.snp.makeConstraints{ make in
+            make.bottom.equalTo(self.view).offset(-5)
+            make.top.equalTo(self.scrollView.snp.bottom).offset(5)
+            make.left.right.equalTo(self.view)
+        }
+    }
+    
+    func setMarkers(){
+        let marker = GMSMarker()
+        marker.position = CLLocationCoordinate2D(latitude: 37.566508, longitude: 126.977945)
+        marker.title = "Sydney"
+        marker.snippet = "South Korea"
+        marker.icon = self.imageWithImage(image: UIImage(named: "mark_animal")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
+        marker.map = mapView
+    }
+    
+    func imageWithImage(image:UIImage, scaledToSize newSize:CGSize) -> UIImage{
+        UIGraphicsBeginImageContextWithOptions(newSize, false, 0.0)
+        image.draw(in: CGRect(x: 0, y: 0, width: newSize.width, height: newSize.height))
+        let newImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return newImage
+    }
+}
+extension HomeViewController{
+    func moveToPlusViewController(){
+        streetButton.rx.tap
+                   .throttle(.seconds(2), scheduler: MainScheduler.instance)
+                   .subscribe(onNext:  { [weak self] in
+                       let signUpVC = PlusSnapshotViewController()
+                       signUpVC.view.backgroundColor = .white
+                       self?.navigationController?.navigationBar.tintColor = .blue
+                       self?.navigationController?.navigationBar.topItem?.title = ""
+                       self?.navigationController?.pushViewController(signUpVC, animated: true)
+                   }).disposed(by: disposeBag)
+        
+        skyButton.rx.tap
+                   .throttle(.seconds(2), scheduler: MainScheduler.instance)
+                   .subscribe(onNext:  { [weak self] in
+                       let signUpVC = DetailViewController()
+                       signUpVC.view.backgroundColor = .white
+                       self?.navigationController?.navigationBar.tintColor = .blue
+                       self?.navigationController?.navigationBar.topItem?.title = ""
+                       self?.navigationController?.pushViewController(signUpVC, animated: true)
+                   }).disposed(by: disposeBag)
     }
 }

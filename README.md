@@ -8,7 +8,7 @@
 
 ## 🛠사용한 기술
 ### **MVVM-Clean Architecture**
-<img src = "https://blog.kakaocdn.net/dn/ba6gfD/btrroXYwxjv/zz7KOvT1aJ2rGbKZNnxexK/img.png" width="30%" height="30%">
+<img src = "https://blog.kakaocdn.net/dn/ba6gfD/btrroXYwxjv/zz7KOvT1aJ2rGbKZNnxexK/img.png" width="35%" height="30%">
 
 ### **MVVM**
   - MVVM을 도입하여 프레젠테이션 로직, 비즈니스 로직을 UI로부터 확실하게 분리하도록 하였습니다.

@@ -7,19 +7,19 @@
 <br />
 
 ## 🛠사용한 기술
-- **MVVM-Clean Architecture**
+### **MVVM-Clean Architecture**
 <img src = "https://blog.kakaocdn.net/dn/ba6gfD/btrroXYwxjv/zz7KOvT1aJ2rGbKZNnxexK/img.png" width="30%" height="30%">
 
-- **MVVM**
+### **MVVM**
   - MVVM을 도입하여 프레젠테이션 로직, 비즈니스 로직을 UI로부터 확실하게 분리하도록 하였습니다.
   - 뷰컨트롤러와 뷰는 화면을 그리는 역할에만 집중하고 데이터 관리, 프레젠테이션 로직의 실행은 뷰모델에서 진행되도록 했습니다.
-- **Clean Architecture**
+### **Clean Architecture**
   - ViewModel의 비즈니스 로직들을 UseCase에서, 네트워크나 데이터베이스에 대한 요청은 Repository로 분리해 각 레이어의 역할을 분명하게 나누었습니다.
   - Domain 레이어가 다른 레이어를 참조하지 않도록 Domain 레이어에는 Repository Protocol을 구성하고, DIContainer와 Coordinator패턴을 활용하여 의존관계 주입을 구현하였습니다.
-- **Coordinator**
+### **Coordinator**
   - 화면 전환에 대한 로직을 ViewController로부터 분리하고 의존성 객체에 대한 주입을 외부에서 처리하도록 하기 위해 Coordinator를 사용했습니다.
-- **Input/Output Modeling**
-  - 뷰모델을 Input과 Output으로 정의하여 뷰의 이벤트들을 Input에 바인딩하고, 뷰에 보여질 데이터를 Output에 바인딩했습니다.
+### **Input/Output Modeling**
+  - 뷰모델을 Input과 Output으로 구성하여 뷰의 이벤트들을 Input에 바인딩하고, 뷰에 보여질 데이터를 Output에 바인딩했습니다.
   
 <br />  
   

@@ -20,6 +20,8 @@
   - 화면 전환에 대한 로직을 ViewController로부터 분리하고 의존성 객체에 대한 주입을 외부에서 처리하도록 하기 위해 Coordinator를 사용했습니다.
 ### **Input/Output Modeling**
   - 뷰모델을 Input과 Output으로 구성하여 뷰의 이벤트들을 Input에 바인딩하고, 뷰에 보여질 데이터를 Output에 바인딩했습니다.
+### RxSwift
+  - 비동기 프로그래밍을 관찰가능한 흐름으로 지원하는 RxSwift를 활용하여 뷰모델과 뷰 간의 데이터 바인딩을 구현하였습니다.
   
  <br />
 

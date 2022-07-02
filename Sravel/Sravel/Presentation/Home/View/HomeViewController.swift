@@ -268,10 +268,18 @@ extension HomeViewController: CLLocationManagerDelegate{
     func setMarkers(){
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(latitude: 37.566508, longitude: 126.977945)
-        marker.title = "Sydney"
-        marker.snippet = "South Korea"
-        marker.icon = self.imageWithImage(image: UIImage(named: "mark_animal")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
+        marker.icon = self.imageWithImage(image: UIImage(named: "mark_building")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
         marker.map = mapView
+        
+        let marker2 = GMSMarker()
+        marker2.position = CLLocationCoordinate2D(latitude: 37.568500, longitude: 126.978945)
+        marker2.icon = self.imageWithImage(image: UIImage(named: "mark_animal")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
+        marker2.map = mapView
+        
+        let marker3 = GMSMarker()
+        marker3.position = CLLocationCoordinate2D(latitude: 37.563518, longitude: 126.974945)
+        marker3.icon = self.imageWithImage(image: UIImage(named: "mark_food")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
+        marker3.map = mapView
     }
     
     func imageWithImage(image:UIImage, scaledToSize newSize:CGSize) -> UIImage{

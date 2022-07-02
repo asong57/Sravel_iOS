@@ -25,7 +25,7 @@ final class PlusSnapshotViewController: UIViewController {
         let button = UIButton()
         button.setTitle("위치를 선택해주세요.", for: .normal)
         button.setTitleColor(.blue, for: .normal)
-        //button.setBackgroundImage(UIImage(named: "box_join"), for: .normal)
+        button.setBackgroundImage(UIImage(named: "box_location"), for: .normal)
         return button
     }()
     
@@ -101,6 +101,8 @@ extension PlusSnapshotViewController{
         locationSelectionButton.snp.makeConstraints{ make in
             make.top.equalTo(self.view).offset(100)
             make.centerX.equalToSuperview()
+            make.width.equalTo(180)
+            make.height.equalTo(40)
         }
         
         cameraButton.snp.makeConstraints{ make in
@@ -114,42 +116,43 @@ extension PlusSnapshotViewController{
         }
         
         stackView.snp.makeConstraints{ make in
-            make.top.equalTo(self.locationSelectionButton.snp.bottom).offset(50)
+            make.top.equalTo(self.locationSelectionButton.snp.bottom).offset(30)
             make.centerX.equalToSuperview()
         }
         
         snapshotImageView.snp.makeConstraints{ make in
-            make.top.equalTo(self.stackView.snp.bottom).offset(50)
+            make.top.equalTo(self.stackView.snp.bottom).offset(40)
             make.centerX.equalToSuperview()
-            make.width.equalTo(100)
-            make.height.equalTo(150)
+            make.width.equalTo(130)
+            make.height.equalTo(190)
         }
         
         titleTextField.snp.makeConstraints{ make in
-            make.top.equalTo(self.snapshotImageView.snp.bottom).offset(30)
+            make.top.equalTo(self.snapshotImageView.snp.bottom).offset(40)
             make.left.equalTo(self.view).offset(30)
             make.right.equalTo(self.view).offset(-30)
-            make.height.equalTo(70)
+            make.height.equalTo(50)
         }
         
         contentTextField.snp.makeConstraints{ make in
             make.top.equalTo(self.titleTextField.snp.bottom).offset(30)
             make.left.equalTo(self.view).offset(30)
             make.right.equalTo(self.view).offset(-30)
-            make.height.equalTo(70)
+            make.height.equalTo(90)
         }
         
         hashtagTextField.snp.makeConstraints{ make in
             make.top.equalTo(self.contentTextField.snp.bottom).offset(30)
             make.left.equalTo(self.view).offset(30)
             make.right.equalTo(self.view).offset(-30)
-            make.height.equalTo(70)
+            make.height.equalTo(50)
         }
         
         registerButton.snp.makeConstraints{ make in
             make.bottom.equalTo(self.view).offset(-50)
             make.left.equalTo(self.view).offset(15)
             make.right.equalTo(self.view).offset(-15)
+            make.height.equalTo(50)
         }
     }
 }

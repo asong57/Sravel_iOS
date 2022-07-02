@@ -24,7 +24,7 @@ final class DetailViewController: UIViewController {
     
     private lazy var snapshotImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "plus_photo")
+        imageView.image = UIImage(named: "ny")
         return imageView
     }()
     
@@ -59,7 +59,7 @@ final class DetailViewController: UIViewController {
         let label = UILabel()
         label.text = "뉴욕 엠파이어스테이트빌딩"
         label.textColor = .black
-        label.font = label.font.withSize(25)
+        label.font = UIFont.boldSystemFont(ofSize: 25)
         return label
     }()
     
@@ -83,7 +83,7 @@ final class DetailViewController: UIViewController {
         stack.spacing = 15.0
         stack.alignment = .fill
         stack.distribution = .fill
-        [self.likeCountLabel, self.heartButton, self.downloadButton].forEach { stack.addArrangedSubview($0) }
+        [ self.heartButton, self.downloadButton].forEach { stack.addArrangedSubview($0) }
         return stack
     }()
 

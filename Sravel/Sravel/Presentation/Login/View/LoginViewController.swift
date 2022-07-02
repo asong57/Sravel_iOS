@@ -157,6 +157,8 @@ extension LoginViewController{
                 if isValid{
                     let homeVC = HomeViewController()
                     homeVC.view.backgroundColor = .white
+                    self?.navigationController?.navigationBar.tintColor = .blue
+                    self?.navigationController?.navigationBar.standardAppearance.titleTextAttributes = [.foregroundColor: UIColor.blue]
                     self?.navigationController!.pushViewController(homeVC, animated: true)
                 }
             }).disposed(by: disposeBag)

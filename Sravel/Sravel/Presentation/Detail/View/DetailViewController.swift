@@ -2,7 +2,7 @@
 //  DetailViewController.swift
 //  Sravel
 //
-//  Created by asong on 2022/06/26.
+//  Created by asong on 2022/07/05.
 //
 
 import UIKit

@@ -1,8 +1,8 @@
 //
-//  LoginRepositoryProtocol.swift
+//  LoginRepository.swift
 //  Sravel
 //
-//  Created by asong on 2022/06/16.
+//  Created by asong on 2022/07/05.
 //
 
 import Foundation

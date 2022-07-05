@@ -2,7 +2,7 @@
 //  AppFlowCoordinator.swift
 //  Sravel
 //
-//  Created by asong on 2022/06/18.
+//  Created by asong on 2022/07/05.
 //
 
 import UIKit
@@ -26,4 +26,3 @@ final class AppFlowCoordinator {
     }
     
 }
-

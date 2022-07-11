@@ -313,3 +313,10 @@ extension HomeViewController{
                    }).disposed(by: disposeBag)
     }
 }
+extension HomeViewController: GMSMapViewDelegate{
+    // 마커 클릭 이벤트 delegate
+    func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
+        mapView.animate(toLocation: marker.position)
+        return false
+      }
+}

@@ -15,15 +15,14 @@ class HomeViewModel {
     private let homeUseCase: HomeUseCase
     
     struct Input {
+        //let markerDidTapEvent: Observable<Void>
     }
     
     struct Output {
-        var validationErrorMessage = BehaviorRelay<String?>(value: nil)
-        var loginButtonShouldEnable = BehaviorRelay<Bool>(value: false)
-        var isLoginSuccessed = BehaviorRelay<Bool>(value: false)
+        var markersData: PublishSubject<[SnapShotDTO]> = PublishSubject<[SnapShotDTO]>()
     }
     
-    init(coordinator: HomeFlowCoordinator,homeUseCase: HomeUseCase){
+    init(coordinator: HomeFlowCoordinator, homeUseCase: HomeUseCase){
         self.coordinator = coordinator
         self.homeUseCase = homeUseCase
     }
@@ -35,11 +34,30 @@ class HomeViewModel {
     }
     
     private func configureInput(_ input: Input, disposeBag: DisposeBag) {
+       /* input.markerDidTapEvent
+            .subscribe(onNext: { [weak self] _ in
+            })*/
     }
     
     private func createOutput(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
+        self.homeUseCase.markersData
+            .subscribe(onNext: { dataArr in
+                output.markersData.onNext(dataArr)
+                print("HomeViewModel")
+            })
+            .disposed(by: disposeBag)
+        
         return output
+    }
+}
+
+// MARK: - Marker
+
+extension HomeViewModel{
+
+    func getMarkerDetailData(latitude: Double, longitude: Double){
+        
     }
 }

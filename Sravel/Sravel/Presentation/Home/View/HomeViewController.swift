@@ -12,6 +12,7 @@ import RxCocoa
 import GoogleMaps
 
 final class HomeViewController: UIViewController {
+    var viewModel: HomeViewModel?
     private var disposeBag = DisposeBag()
     private var presentLocation: String = "광주광역시 북구 용봉동 147"
     private var mapView: GMSMapView?
@@ -22,8 +23,9 @@ final class HomeViewController: UIViewController {
         self.congifureUI()
         self.setNavigationBar()
         self.setPresentLocation()
-        self.setMarkers()
+        self.setMarker()
         self.moveToPlusViewController()
+        self.bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -232,9 +234,58 @@ extension HomeViewController{
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
     }
 }
+
+// MARK: ViewModel Bind
+
+extension HomeViewController{
+    func bindViewModel(){
+        let input = HomeViewModel.Input()
+        guard let viewModel = self.viewModel else{return}
+        let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
+        self.bindMarkers(output: output)
+    }
+    
+    func bindMarkers(output: HomeViewModel.Output?){
+        output?.markersData
+            .subscribe(onNext: { [weak self] dataArr in
+                guard let self = self else { return }
+                for data in dataArr{
+                    let marker = GMSMarker()
+                    marker.position = CLLocationCoordinate2D(latitude: data.latitude, longitude: data.longitude)
+                    switch data.hashtag{
+                    case "#하늘" :
+                        marker.icon = self.imageWithImage(image: UIImage(named: "mark_sky")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
+                    case "#바다" :
+                        marker.icon = self.imageWithImage(image: UIImage(named: "mark_sea")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
+                    case "#음식" :
+                        marker.icon = self.imageWithImage(image: UIImage(named: "mark_food")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
+                    case "#명소" :
+                        marker.icon = self.imageWithImage(image: UIImage(named: "mark_landmark")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
+                    case "#거리" :
+                        marker.icon = self.imageWithImage(image: UIImage(named: "mark_street")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
+                    case "#도시" :
+                        marker.icon = self.imageWithImage(image: UIImage(named: "mark_building")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
+                    case "#시골" :
+                        marker.icon = self.imageWithImage(image: UIImage(named: "mark_country")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
+                    case "#자연" :
+                        marker.icon = self.imageWithImage(image: UIImage(named: "mark_nature")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
+                    case "#동물" :
+                        marker.icon = self.imageWithImage(image: UIImage(named: "mark_animal")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
+                    default:
+                        marker.icon = self.imageWithImage(image: UIImage(named: "mark_building")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
+                    }
+                    
+                    marker.map = self.mapView
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+}
+
+ // MARK: Marker 관련 작업
+
 extension HomeViewController: CLLocationManagerDelegate{
     func setPresentLocation(){
-        
         var locationManager: CLLocationManager!
         // 현재 위치 가져오기
         locationManager = CLLocationManager()
@@ -265,7 +316,7 @@ extension HomeViewController: CLLocationManagerDelegate{
         }
     }
     
-    func setMarkers(){
+    func setMarker(){
         let marker = GMSMarker()
         marker.position = CLLocationCoordinate2D(latitude: 37.566508, longitude: 126.977945)
         marker.icon = self.imageWithImage(image: UIImage(named: "mark_building")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
@@ -290,33 +341,39 @@ extension HomeViewController: CLLocationManagerDelegate{
         return newImage
     }
 }
+
+// MARK: Navigation
+ // 수정 예정
 extension HomeViewController{
     func moveToPlusViewController(){
         streetButton.rx.tap
-                   .throttle(.seconds(2), scheduler: MainScheduler.instance)
-                   .subscribe(onNext:  { [weak self] in
-                       let signUpVC = PlusSnapshotViewController()
-                       signUpVC.view.backgroundColor = .white
-                       self?.navigationController?.navigationBar.tintColor = .blue
-                       self?.navigationController?.navigationBar.topItem?.title = ""
-                       self?.navigationController?.pushViewController(signUpVC, animated: true)
-                   }).disposed(by: disposeBag)
+            .throttle(.seconds(2), scheduler: MainScheduler.instance)
+            .subscribe(onNext:  { [weak self] in
+                let signUpVC = PlusSnapshotViewController()
+                signUpVC.view.backgroundColor = .white
+                self?.navigationController?.navigationBar.tintColor = .blue
+                self?.navigationController?.navigationBar.topItem?.title = ""
+                self?.navigationController?.pushViewController(signUpVC, animated: true)
+            }).disposed(by: disposeBag)
         
         skyButton.rx.tap
-                   .throttle(.seconds(2), scheduler: MainScheduler.instance)
-                   .subscribe(onNext:  { [weak self] in
-                       let signUpVC = DetailViewController()
-                       signUpVC.view.backgroundColor = .white
-                       self?.navigationController?.navigationBar.tintColor = .blue
-                       self?.navigationController?.navigationBar.topItem?.title = ""
-                       self?.navigationController?.pushViewController(signUpVC, animated: true)
-                   }).disposed(by: disposeBag)
+            .throttle(.seconds(2), scheduler: MainScheduler.instance)
+            .subscribe(onNext:  { [weak self] in
+                let signUpVC = DetailViewController()
+                signUpVC.view.backgroundColor = .white
+                self?.navigationController?.navigationBar.tintColor = .blue
+                self?.navigationController?.navigationBar.topItem?.title = ""
+                self?.navigationController?.pushViewController(signUpVC, animated: true)
+            }).disposed(by: disposeBag)
     }
 }
+
+// MARK: GMPSMapViewDelegate
+
 extension HomeViewController: GMSMapViewDelegate{
     // 마커 클릭 이벤트 delegate
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         mapView.animate(toLocation: marker.position)
         return false
-      }
+    }
 }

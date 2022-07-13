@@ -9,5 +9,5 @@ import Foundation
 import RxSwift
 
 protocol HomeRepository{
-    func getMarkersData() -> Observable<Bool>
+    func getMarkersData() -> Observable<[SnapShotDTO]>
 }

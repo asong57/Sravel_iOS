@@ -33,6 +33,12 @@ final class HomeViewController: UIViewController {
         self.navigationItem.title = presentLocation
     }
     
+    static func create(with viewModel: HomeViewModel) -> HomeViewController{
+        let view = HomeViewController()
+        view.viewModel = viewModel
+        return view
+    }
+    
     private lazy var streetButton: UIButton = {
         let button = UIButton()
         button.setTitle("거리", for: .normal)
@@ -239,7 +245,7 @@ extension HomeViewController{
 
 extension HomeViewController{
     func bindViewModel(){
-        let input = HomeViewModel.Input()
+        let input = HomeViewModel.Input(markerDidTapEvent: self.oceanButton.rx.tap.asObservable())
         guard let viewModel = self.viewModel else{return}
         let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
         self.bindMarkers(output: output)

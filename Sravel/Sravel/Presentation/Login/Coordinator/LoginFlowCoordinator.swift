@@ -26,4 +26,10 @@ class LoginFlowCoordinator{
         var signUpCoordinator = SignUpFlowCoordinator(navigationController: navigationController!, signUpDIContainer: signUpDIContainer)
         signUpCoordinator.start()
     }
+    
+    func moveToHomeViewController(){
+        let homeDIContainer = HomeDIContainer()
+        var homeCoordinator = HomeFlowCoordinator(navigationController: navigationController!, homeDIContainer: homeDIContainer)
+        homeCoordinator.start()
+    }
 }

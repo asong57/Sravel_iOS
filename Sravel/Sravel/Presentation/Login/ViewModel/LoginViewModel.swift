@@ -84,8 +84,10 @@ class LoginViewModel {
             output.validationErrorMessage.accept(message)
         })
         
-        self.loginUseCase.isLoginSuccessed.subscribe(onNext: {isSuccessful in
+        self.loginUseCase.isLoginSuccessed.subscribe(onNext:  { [weak self] isSuccessful in
             output.isLoginSuccessed.accept(isSuccessful == true)
+            guard let self = self else{ return }
+            self.coordinator.moveToHomeViewController()
         })
         
         return output

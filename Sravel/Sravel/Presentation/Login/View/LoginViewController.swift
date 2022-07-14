@@ -130,7 +130,6 @@ extension LoginViewController{
         let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
         self.bindErrorMessageLabel(output: output)
         self.bindLoginButton(output: output)
-        self.moveToHomeViewController(output: output)
     }
     
     func bindErrorMessageLabel(output: LoginViewModel.Output?){
@@ -147,20 +146,6 @@ extension LoginViewController{
             .drive(onNext: { [weak self] isValid in
                 self?.loginButton.isEnabled = isValid
                 self?.loginButton.backgroundColor = isValid ? .blue : .lightBlue
-            }).disposed(by: disposeBag)
-    }
-}
-extension LoginViewController{
-    func moveToHomeViewController(output: LoginViewModel.Output?){
-        output?.isLoginSuccessed.asDriver(onErrorJustReturn: false)
-            .drive(onNext: { [weak self] isValid in
-                if isValid{
-                    let homeVC = HomeViewController()
-                    homeVC.view.backgroundColor = .white
-                    self?.navigationController?.navigationBar.tintColor = .blue
-                    self?.navigationController?.navigationBar.standardAppearance.titleTextAttributes = [.foregroundColor: UIColor.blue]
-                    self?.navigationController!.pushViewController(homeVC, animated: true)
-                }
             }).disposed(by: disposeBag)
     }
 }

@@ -23,10 +23,9 @@ final class HomeViewController: UIViewController {
         self.congifureUI()
         self.setNavigationBar()
         self.setPresentLocation()
-        self.setMarker()
         self.moveToPlusViewController()
         self.bindViewModel()
-        self.mapView?.delegate = self
+        self.setGoogleMap()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -240,13 +239,17 @@ extension HomeViewController{
         let rightBarButtonItem = UIBarButtonItem(customView: view ?? UIView())
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
     }
+    
+    func setGoogleMap(){
+        self.mapView?.delegate = self
+    }
 }
 
 // MARK: ViewModel Bind
 
 extension HomeViewController{
     func bindViewModel(){
-        let input = HomeViewModel.Input(markerDidTapEvent: self.oceanButton.rx.tap.asObservable())
+        let input = HomeViewModel.Input(markerSet: Observable.just(true))
         guard let viewModel = self.viewModel else{return}
         let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
         self.bindMarkers(output: output)
@@ -312,7 +315,6 @@ extension HomeViewController: CLLocationManagerDelegate{
         
         let latitude = (coor?.latitude ?? 37.566508) as Double
         let longitude = (coor?.longitude ?? 126.977945) as Double
-        print("\(latitude)")
         
         let camera = GMSCameraPosition.camera(withLatitude: 37.566508, longitude: 126.977945, zoom: 16.0)
         mapView = GMSMapView.map(withFrame: self.view.frame, camera: camera)
@@ -323,23 +325,6 @@ extension HomeViewController: CLLocationManagerDelegate{
             make.top.equalTo(self.scrollView.snp.bottom).offset(5)
             make.left.right.equalTo(self.view)
         }
-    }
-    
-    func setMarker(){
-        let marker = GMSMarker()
-        marker.position = CLLocationCoordinate2D(latitude: 37.566508, longitude: 126.977945)
-        marker.icon = self.imageWithImage(image: UIImage(named: "mark_building")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
-        marker.map = mapView
-        
-        let marker2 = GMSMarker()
-        marker2.position = CLLocationCoordinate2D(latitude: 37.568500, longitude: 126.978945)
-        marker2.icon = self.imageWithImage(image: UIImage(named: "mark_animal")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
-        marker2.map = mapView
-        
-        let marker3 = GMSMarker()
-        marker3.position = CLLocationCoordinate2D(latitude: 37.563518, longitude: 126.974945)
-        marker3.icon = self.imageWithImage(image: UIImage(named: "mark_food")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
-        marker3.map = mapView
     }
     
     func imageWithImage(image:UIImage, scaledToSize newSize:CGSize) -> UIImage{

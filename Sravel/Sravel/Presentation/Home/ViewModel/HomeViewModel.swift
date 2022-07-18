@@ -15,7 +15,7 @@ class HomeViewModel {
     private let homeUseCase: HomeUseCase
     
     struct Input {
-        let markerDidTapEvent: Observable<Void>
+        let markerSet: Observable<Bool>
     }
     
     struct Output {
@@ -34,7 +34,7 @@ class HomeViewModel {
     }
     
     private func configureInput(_ input: Input, disposeBag: DisposeBag) {
-        input.markerDidTapEvent
+        input.markerSet
             .subscribe(onNext: { [weak self] _ in
                 self?.homeUseCase.getMarkersData()
             })

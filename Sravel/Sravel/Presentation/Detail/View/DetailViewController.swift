@@ -11,6 +11,10 @@ import RxSwift
 import RxCocoa
 
 final class DetailViewController: UIViewController {
+    
+    var viewModel: DetailViewModel?
+    private var disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureSubViews()
@@ -20,6 +24,12 @@ final class DetailViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.navigationItem.title = "자세히 보기"
+    }
+    
+    static func create(with viewModel: DetailViewModel) -> DetailViewController{
+        let view = DetailViewController()
+        view.viewModel = viewModel
+        return view
     }
     
     private lazy var snapshotImageView: UIImageView = {

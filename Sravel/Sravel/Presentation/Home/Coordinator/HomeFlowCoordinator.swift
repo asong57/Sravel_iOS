@@ -20,4 +20,10 @@ class HomeFlowCoordinator{
         let vc = homeDIContainer.makeHomeViewController(coordinator: self)
         navigationController?.pushViewController(vc, animated: false)
     }
+    
+    func moveToDetailViewController(){
+        let detailDIContainer = DetailDIContainer()
+        var detailCoordinator = DetailFlowCoordinator(navigationController: navigationController!, detailDIContainer: detailDIContainer)
+        detailCoordinator.start()
+    }
 }

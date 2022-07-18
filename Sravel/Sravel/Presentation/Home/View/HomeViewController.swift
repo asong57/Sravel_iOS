@@ -26,6 +26,7 @@ final class HomeViewController: UIViewController {
         self.setMarker()
         self.moveToPlusViewController()
         self.bindViewModel()
+        self.mapView?.delegate = self
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -255,6 +256,7 @@ extension HomeViewController{
         output?.markersData
             .subscribe(onNext: { [weak self] dataArr in
                 guard let self = self else { return }
+                print(dataArr)
                 for data in dataArr{
                     let marker = GMSMarker()
                     marker.position = CLLocationCoordinate2D(latitude: data.latitude, longitude: data.longitude)
@@ -280,11 +282,12 @@ extension HomeViewController{
                     default:
                         marker.icon = self.imageWithImage(image: UIImage(named: "mark_building")!, scaledToSize: CGSize(width: 60.0, height: 80.0))
                     }
-                    
+                    print(marker)
                     marker.map = self.mapView
                 }
             })
             .disposed(by: disposeBag)
+        self.mapView?.setNeedsDisplay()
     }
 }
 
@@ -382,4 +385,9 @@ extension HomeViewController: GMSMapViewDelegate{
         mapView.animate(toLocation: marker.position)
         return false
     }
+    
+    func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
+      print("You tapped at \(coordinate.latitude), \(coordinate.longitude)")
+    }
 }
+

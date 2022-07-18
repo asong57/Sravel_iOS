@@ -31,18 +31,16 @@ class FireStore{
                             let jsonData = try JSONSerialization.data(withJSONObject:data)
                             let markerInfo = try decoder.decode(SnapShotDTO.self, from: jsonData)
                             dataArr.append(markerInfo)
-                            print(markerInfo)
+                            
                         } catch let err {
                             print("err: \(err)")
                         }
                         //print("FireStore: \(document.documentID) => \(document.data())")
                     }
+                    observable.onNext(dataArr)
                 }
             }
-            observable.onNext(dataArr)
-                
             return Disposables.create()
         }
-        
     }
 }

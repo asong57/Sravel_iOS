@@ -349,16 +349,6 @@ extension HomeViewController{
                 self?.navigationController?.navigationBar.topItem?.title = ""
                 self?.navigationController?.pushViewController(signUpVC, animated: true)
             }).disposed(by: disposeBag)
-        
-        skyButton.rx.tap
-            .throttle(.seconds(2), scheduler: MainScheduler.instance)
-            .subscribe(onNext:  { [weak self] in
-                let signUpVC = DetailViewController()
-                signUpVC.view.backgroundColor = .white
-                self?.navigationController?.navigationBar.tintColor = .blue
-                self?.navigationController?.navigationBar.topItem?.title = ""
-                self?.navigationController?.pushViewController(signUpVC, animated: true)
-            }).disposed(by: disposeBag)
     }
 }
 
@@ -372,7 +362,8 @@ extension HomeViewController: GMSMapViewDelegate{
     }
     
     func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-      print("You tapped at \(coordinate.latitude), \(coordinate.longitude)")
+        print("You tapped at \(coordinate.latitude), \(coordinate.longitude)")
+        viewModel?.getMarkerDetailData(latitude: coordinate.latitude, longitude: coordinate.longitude)
     }
 }
 

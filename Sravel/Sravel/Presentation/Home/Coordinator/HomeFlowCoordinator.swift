@@ -21,8 +21,8 @@ class HomeFlowCoordinator{
         navigationController?.pushViewController(vc, animated: false)
     }
     
-    func moveToDetailViewController(){
-        let detailDIContainer = DetailDIContainer()
+    func moveToDetailViewController(latitude: Double, longitude: Double){
+        let detailDIContainer = DetailDIContainer(latitude: latitude, longitude: longitude)
         var detailCoordinator = DetailFlowCoordinator(navigationController: navigationController!, detailDIContainer: detailDIContainer)
         detailCoordinator.start()
     }

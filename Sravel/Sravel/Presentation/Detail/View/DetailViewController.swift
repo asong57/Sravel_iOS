@@ -19,6 +19,7 @@ final class DetailViewController: UIViewController {
         super.viewDidLoad()
         self.configureSubViews()
         self.congifureUI()
+        self.bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -157,5 +158,14 @@ extension DetailViewController{
             make.top.equalTo(self.contentLabel.snp.bottom).offset(30)
             make.left.equalTo(self.view).offset(15)
         }
+    }
+}
+
+extension DetailViewController {
+    func bindViewModel(){
+        let input = DetailViewModel.Input()
+        guard let viewModel = self.viewModel else{return}
+        let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
+        
     }
 }

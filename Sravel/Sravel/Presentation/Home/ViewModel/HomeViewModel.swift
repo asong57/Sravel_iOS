@@ -59,6 +59,6 @@ class HomeViewModel {
 extension HomeViewModel{
 
     func getMarkerDetailData(latitude: Double, longitude: Double){
-        self.coordinator.moveToDetailViewController()
+        self.coordinator.moveToDetailViewController(latitude: latitude, longitude: longitude)
     }
 }

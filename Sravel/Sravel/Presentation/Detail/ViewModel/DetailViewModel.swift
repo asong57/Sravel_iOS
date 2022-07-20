@@ -10,10 +10,18 @@ import RxSwift
 import RxRelay
 
 class DetailViewModel {
-    var coordinator: DetailFlowCoordinator
+    
+    // MARK: - Internal
+    
+    var latitude: Double
+    var longitude: Double
+    
+    // MARK: - Private
+    
+    private var coordinator: DetailFlowCoordinator
     private let disposeBag = DisposeBag()
     private let detailUseCase: DetailUseCase
-    
+
     struct Input {
        
     }
@@ -22,7 +30,9 @@ class DetailViewModel {
        
     }
     
-    init(coordinator: DetailFlowCoordinator, detailUseCase: DetailUseCase){
+    init(latitude: Double, longitude: Double, coordinator: DetailFlowCoordinator, detailUseCase: DetailUseCase){
+        self.latitude = latitude
+        self.longitude = longitude
         self.coordinator = coordinator
         self.detailUseCase = detailUseCase
     }
@@ -34,7 +44,7 @@ class DetailViewModel {
     }
     
     private func configureInput(_ input: Input, disposeBag: DisposeBag) {
-        
+        print("latitude: \(latitude) longitude: \(longitude)")
     }
     
     private func createOutput(from input: Input, disposeBag: DisposeBag) -> Output {

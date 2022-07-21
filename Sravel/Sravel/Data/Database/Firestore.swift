@@ -31,15 +31,41 @@ class FireStore{
                             let jsonData = try JSONSerialization.data(withJSONObject:data)
                             let markerInfo = try decoder.decode(SnapShotDTO.self, from: jsonData)
                             dataArr.append(markerInfo)
-                            
                         } catch let err {
                             print("err: \(err)")
                         }
-                        //print("FireStore: \(document.documentID) => \(document.data())")
                     }
                     observable.onNext(dataArr)
                 }
             }
+            return Disposables.create()
+        }
+    }
+    
+    func getDetailData(latitude: Double, longitude: Double) -> Observable<SnapShotDTO> {
+        return Observable.create { [weak self] observable in
+            print("get latitude: \(latitude) longitude: \(longitude)")
+            self?.db.collection("snapshots")
+                .whereField("latitude", isEqualTo: latitude)
+                .whereField("longitude", isEqualTo: longitude)
+                .getDocuments() { (querySnapshot, err) in
+                    if let err = err {
+                        print("Error getting documents: \(err)")
+                    } else {
+                        let decoder =  JSONDecoder()
+                        for document in querySnapshot!.documents {
+                            do {
+                                let data = document.data()
+                                let jsonData = try JSONSerialization.data(withJSONObject:data)
+                                let markerInfo = try decoder.decode(SnapShotDTO.self, from: jsonData)
+                                print("markerInfo: \(markerInfo)")
+                                observable.onNext(markerInfo)
+                            } catch let err {
+                                print("err: \(err)")
+                            }
+                        }
+                    }
+                }
             return Disposables.create()
         }
     }

@@ -358,12 +358,9 @@ extension HomeViewController: GMSMapViewDelegate{
     // 마커 클릭 이벤트 delegate
     func mapView(_ mapView: GMSMapView, didTap marker: GMSMarker) -> Bool {
         mapView.animate(toLocation: marker.position)
+        print("You tapped at \(marker.position.latitude), \(marker.position.longitude)")
+        viewModel?.getMarkerDetailData(latitude: marker.position.latitude, longitude: marker.position.longitude)
         return false
-    }
-    
-    func mapView(_ mapView: GMSMapView, didTapAt coordinate: CLLocationCoordinate2D) {
-        print("You tapped at \(coordinate.latitude), \(coordinate.longitude)")
-        viewModel?.getMarkerDetailData(latitude: coordinate.latitude, longitude: coordinate.longitude)
     }
 }
 

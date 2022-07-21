@@ -27,7 +27,7 @@ class DetailViewModel {
     }
     
     struct Output {
-       
+        var detailMarkerData: PublishSubject<SnapShotDTO> = PublishSubject<SnapShotDTO>()
     }
     
     init(latitude: Double, longitude: Double, coordinator: DetailFlowCoordinator, detailUseCase: DetailUseCase){
@@ -53,6 +53,12 @@ class DetailViewModel {
     
     private func createOutput(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        
+        self.detailUseCase.detailData
+            .subscribe(onNext: { data in
+                output.detailMarkerData.onNext(data)
+            })
+            .disposed(by: disposeBag)
         
         return output
     }

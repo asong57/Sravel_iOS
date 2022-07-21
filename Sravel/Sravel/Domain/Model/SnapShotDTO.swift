@@ -22,6 +22,7 @@ struct SnapShotDTO: Codable{
     let myTripCount: Int
     let myTripCheck: [String: Bool]
     let hashtag2: String
+    let time: String
     
     enum CodingKeys: String, CodingKey {
         case id = "id"
@@ -38,5 +39,6 @@ struct SnapShotDTO: Codable{
         case myTripCount = "mytripCount"
         case myTripCheck = "mytripCheck"
         case hashtag2 = "hashtag2"
+        case time = "time"
     }
 }

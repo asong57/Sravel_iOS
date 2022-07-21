@@ -166,6 +166,23 @@ extension DetailViewController {
         let input = DetailViewModel.Input(readyToGetDetailData: Observable.just(true))
         guard let viewModel = self.viewModel else{return}
         let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
-        
+        bindMarker(output: output)
+    }
+    
+    func bindMarker(output: DetailViewModel.Output?){
+        output?.detailMarkerData
+            .subscribe(onNext: { [weak self] data in
+                guard let self = self else { return }
+                self.titleLabel.text = data.title
+                self.contentLabel.text = data.description
+                self.hashtagLabel.text = data.hashtag + data.hashtag2
+                let time: String = data.time
+                let timeStr: String = String(time[time.index(time.startIndex, offsetBy: 0)...time.index(time.startIndex, offsetBy: 3)]) + "." + String(time[time.index(time.startIndex, offsetBy: 4)...time.index(time.startIndex, offsetBy: 5)]) + "." + String(time[time.index(time.startIndex, offsetBy: 6)...time.index(time.startIndex, offsetBy: 7)])
+                self.dateLabel.text = timeStr
+                let url = URL(string: data.imageUrl + ".jpg")
+                let data = try! Data(contentsOf: url!)
+                self.snapshotImageView.image = UIImage(data: data)
+            })
+            .disposed(by: disposeBag)
     }
 }

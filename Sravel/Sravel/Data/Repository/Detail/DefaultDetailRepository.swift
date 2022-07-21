@@ -6,7 +6,16 @@
 //
 
 import Foundation
+import RxSwift
 
 class DefaultDetailRepository: DetailRepository{
-    
+    func getDetailData(latitude: Double, longitude: Double) -> Observable<SnapShotDTO> {
+        return Observable.create { observable in
+            FireStore.fireStore.getDetailData(latitude: latitude, longitude: longitude)
+                .subscribe(onNext: { data in
+                    observable.onNext(data)
+                })
+            return Disposables.create()
+        }
+    }
 }

@@ -6,7 +6,8 @@
 //
 
 import Foundation
+import RxSwift
 
 protocol DetailRepository{
-    
+    func getDetailData(latitude: Double, longitude: Double) -> Observable<SnapShotDTO>
 }

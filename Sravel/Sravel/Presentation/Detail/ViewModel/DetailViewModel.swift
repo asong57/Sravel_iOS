@@ -23,7 +23,7 @@ class DetailViewModel {
     private let detailUseCase: DetailUseCase
 
     struct Input {
-       
+        let readyToGetDetailData: Observable<Bool>
     }
     
     struct Output {
@@ -44,7 +44,11 @@ class DetailViewModel {
     }
     
     private func configureInput(_ input: Input, disposeBag: DisposeBag) {
-        print("latitude: \(latitude) longitude: \(longitude)")
+        input.readyToGetDetailData
+            .subscribe(onNext: { [weak self] _ in
+                guard let self = self else { return }
+                self.detailUseCase.getMarkersData(latitude: self.latitude, longitude: self.longitude)
+            }).disposed(by: disposeBag)
     }
     
     private func createOutput(from input: Input, disposeBag: DisposeBag) -> Output {

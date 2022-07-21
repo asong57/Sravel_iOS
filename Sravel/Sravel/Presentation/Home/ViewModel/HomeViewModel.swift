@@ -37,7 +37,7 @@ class HomeViewModel {
         input.markerSet
             .subscribe(onNext: { [weak self] _ in
                 self?.homeUseCase.getMarkersData()
-            })
+            }).disposed(by: disposeBag)
     }
     
     private func createOutput(from input: Input, disposeBag: DisposeBag) -> Output {

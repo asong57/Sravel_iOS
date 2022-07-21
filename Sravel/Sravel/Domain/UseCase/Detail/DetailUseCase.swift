@@ -17,8 +17,16 @@ class DetailUseCase{
     
     // MARK: Internal Property
     
+    var detailData = PublishSubject<SnapShotDTO>()
 
     init(repository: DetailRepository){
         self.repository = repository
+    }
+    
+    func getMarkersData(latitude: Double, longitude: Double){
+        repository.getDetailData(latitude: latitude, longitude: longitude)
+            .subscribe(onNext: { [weak self] data in
+                self?.detailData.onNext(data)
+            }).disposed(by: disposeBag)
     }
 }

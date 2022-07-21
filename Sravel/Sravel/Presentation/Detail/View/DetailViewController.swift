@@ -163,7 +163,7 @@ extension DetailViewController{
 
 extension DetailViewController {
     func bindViewModel(){
-        let input = DetailViewModel.Input()
+        let input = DetailViewModel.Input(readyToGetDetailData: Observable.just(true))
         guard let viewModel = self.viewModel else{return}
         let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
         

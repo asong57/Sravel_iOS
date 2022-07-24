@@ -11,10 +11,14 @@ import RxSwift
 import RxCocoa
 
 final class PlusSnapshotViewController: UIViewController {
+    var viewModel: PlusSnapshotViewModel?
+    private var disposeBag = DisposeBag()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureSubViews()
         self.congifureUI()
+        self.bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -154,5 +158,13 @@ extension PlusSnapshotViewController{
             make.right.equalTo(self.view).offset(-15)
             make.height.equalTo(50)
         }
+    }
+}
+
+extension PlusSnapshotViewController {
+    func bindViewModel(){
+        let input = PlusSnapshotViewModel.Input(titleTextFieldDidEditEvent: titleTextField.rx.text.orEmpty.asObservable(), descriptionTextFieldDidEditEvent: contentTextField.rx.text.orEmpty.asObservable(), hashtagTextFieldDidEditEvent: hashtagTextField.rx.text.orEmpty.asObservable(), submitButtonDidTapEvent: registerButton.rx.tap.asObservable())
+        guard let viewModel = self.viewModel else{return}
+        let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
     }
 }

@@ -8,14 +8,34 @@
 import Foundation
 import RxSwift
 
-class PlusSnapshotUseCase{
+class PlusSnapshotUseCase {
+    
+    var title: String = ""
+    var description: String = ""
+    var hashtag: String = ""
     
     // MARK: Private Property
     
     private let repository: PlusSnapshotRepository
     private let disposeBag = DisposeBag()
     
-    init(repository: PlusSnapshotRepository){
+    init(repository: PlusSnapshotRepository) {
         self.repository = repository
+    }
+    
+    func setTitle(_ text: String) {
+        self.title = text
+    }
+    
+    func setDescription(_ text: String) {
+        self.description = text
+    }
+    
+    func setHashtag(_ text: String) {
+        self.hashtag = text
+    }
+    
+    func plusSnapshotMarker(){
+        
     }
 }

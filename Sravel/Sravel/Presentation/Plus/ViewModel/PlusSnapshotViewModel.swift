@@ -39,15 +39,17 @@ class PlusSnapshotViewModel {
     private func configureInput(_ input: Input, disposeBag: DisposeBag) {
         input.titleTextFieldDidEditEvent
             .subscribe(onNext: { [weak self] title in
-                print(title)
+                self?.plusSnapshotUseCase.setTitle(title)
             }).disposed(by: disposeBag)
         
         input.descriptionTextFieldDidEditEvent
-            .subscribe(onNext: { [weak self] _ in
+            .subscribe(onNext: { [weak self] text in
+                self?.plusSnapshotUseCase.setDescription(text)
             }).disposed(by: disposeBag)
         
         input.hashtagTextFieldDidEditEvent
-            .subscribe(onNext: { [weak self] _ in
+            .subscribe(onNext: { [weak self] text in
+                self?.plusSnapshotUseCase.setHashtag(text)
             }).disposed(by: disposeBag)
         
         input.submitButtonDidTapEvent

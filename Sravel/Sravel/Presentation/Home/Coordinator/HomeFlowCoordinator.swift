@@ -26,4 +26,10 @@ class HomeFlowCoordinator{
         var detailCoordinator = DetailFlowCoordinator(navigationController: navigationController!, detailDIContainer: detailDIContainer)
         detailCoordinator.start()
     }
+    
+    func moveToPlusSnapshotViewController(){
+        let plusSnapshotDIContainer = PlusSnapshotDIContainer()
+        var plusCoordinator = PlusSnapshotFlowCoordinator(navigationController: navigationController!, plusSnapshotDIContainer: plusSnapshotDIContainer)
+        plusCoordinator.start()
+    }
 }

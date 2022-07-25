@@ -9,5 +9,5 @@ import Foundation
 import RxSwift
 
 protocol PlusSnapshotRepository{
-    
+    func plusSnapshotMarkerInfo(markerData: SnapShotDTO) -> Observable<Bool>
 }

@@ -69,4 +69,12 @@ class FireStore{
             return Disposables.create()
         }
     }
+    
+    func plusSnapshotMarker(markerData: SnapShotDTO) -> Observable<Bool> {
+        return Observable.create { [weak self] observable in
+            observable.onNext(true)
+            
+            return Disposables.create()
+        }
+    }
 }

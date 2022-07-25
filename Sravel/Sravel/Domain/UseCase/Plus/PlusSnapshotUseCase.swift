@@ -10,4 +10,12 @@ import RxSwift
 
 class PlusSnapshotUseCase{
     
+    // MARK: Private Property
+    
+    private let repository: PlusSnapshotRepository
+    private let disposeBag = DisposeBag()
+    
+    init(repository: PlusSnapshotRepository){
+        self.repository = repository
+    }
 }

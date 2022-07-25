@@ -23,7 +23,6 @@ final class HomeViewController: UIViewController {
         self.congifureUI()
         self.setNavigationBar()
         self.setPresentLocation()
-        self.moveToPlusViewController()
         self.bindViewModel()
         self.setGoogleMap()
     }
@@ -249,7 +248,7 @@ extension HomeViewController{
 
 extension HomeViewController{
     func bindViewModel(){
-        let input = HomeViewModel.Input(markerSet: Observable.just(true))
+        let input = HomeViewModel.Input(markerSet: Observable.just(true), plusButtonDidTapEvent: streetButton.rx.tap.asObservable())
         guard let viewModel = self.viewModel else{return}
         let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
         self.bindMarkers(output: output)
@@ -333,22 +332,6 @@ extension HomeViewController: CLLocationManagerDelegate{
         let newImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         return newImage
-    }
-}
-
-// MARK: Navigation
- // 수정 예정
-extension HomeViewController{
-    func moveToPlusViewController(){
-        streetButton.rx.tap
-            .throttle(.seconds(2), scheduler: MainScheduler.instance)
-            .subscribe(onNext:  { [weak self] in
-                let signUpVC = PlusSnapshotViewController()
-                signUpVC.view.backgroundColor = .white
-                self?.navigationController?.navigationBar.tintColor = .blue
-                self?.navigationController?.navigationBar.topItem?.title = ""
-                self?.navigationController?.pushViewController(signUpVC, animated: true)
-            }).disposed(by: disposeBag)
     }
 }
 

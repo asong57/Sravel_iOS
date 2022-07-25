@@ -16,6 +16,7 @@ class HomeViewModel {
     
     struct Input {
         let markerSet: Observable<Bool>
+        let plusButtonDidTapEvent: Observable<Void>
     }
     
     struct Output {
@@ -38,6 +39,11 @@ class HomeViewModel {
             .subscribe(onNext: { [weak self] _ in
                 self?.homeUseCase.getMarkersData()
             }).disposed(by: disposeBag)
+        
+        input.plusButtonDidTapEvent
+            .subscribe(onNext: { [weak self] _ in
+                self?.coordinator.moveToPlusSnapshotViewController()
+            })
     }
     
     private func createOutput(from input: Input, disposeBag: DisposeBag) -> Output {

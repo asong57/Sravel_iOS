@@ -11,6 +11,7 @@ import RxSwift
 import RxCocoa
 
 final class PlusSnapshotViewController: UIViewController {
+    
     var viewModel: PlusSnapshotViewModel?
     private var disposeBag = DisposeBag()
     
@@ -25,6 +26,13 @@ final class PlusSnapshotViewController: UIViewController {
         super.viewWillAppear(animated)
         self.navigationItem.title = "여행지 등록"
     }
+    
+    static func create(with viewModel: PlusSnapshotViewModel) -> PlusSnapshotViewController{
+        let view = PlusSnapshotViewController()
+        view.viewModel = viewModel
+        return view
+    }
+    
     private lazy var locationSelectionButton: UIButton = {
         let button = UIButton()
         button.setTitle("위치를 선택해주세요.", for: .normal)

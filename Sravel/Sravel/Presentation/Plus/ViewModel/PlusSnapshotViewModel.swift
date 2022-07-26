@@ -54,6 +54,7 @@ class PlusSnapshotViewModel {
         
         input.submitButtonDidTapEvent
             .subscribe(onNext: { [weak self] _ in
+                self?.plusSnapshotUseCase.plusSnapshotMarker()
             }).disposed(by: disposeBag)
     }
     

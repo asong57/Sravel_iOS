@@ -20,4 +20,10 @@ class PlusSnapshotFlowCoordinator{
         let vc = plusSnapshotDIContainer.makePlusSnapshotViewController(coordinator: self)
         navigationController?.pushViewController(vc, animated: false)
     }
+    
+    func moveToHomeViewController(){
+        let homeDIContainer = HomeDIContainer()
+        var homeCoordinator = HomeFlowCoordinator(navigationController: navigationController!, homeDIContainer: homeDIContainer)
+        homeCoordinator.start()
+    }
 }

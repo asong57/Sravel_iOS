@@ -60,8 +60,10 @@ class PlusSnapshotViewModel {
     
     private func createOutput(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
-        
-        
+        self.plusSnapshotUseCase.isPlusMarkerSuccessed.subscribe(onNext:  { [weak self] isSuccessful in
+            guard let self = self else{ return }
+            self.coordinator.moveToHomeViewController()
+        }).disposed(by: disposeBag)
         return output
     }
 }

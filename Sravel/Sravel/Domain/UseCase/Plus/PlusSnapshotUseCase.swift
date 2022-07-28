@@ -38,7 +38,7 @@ class PlusSnapshotUseCase {
     }
     
     func plusSnapshotMarker(){
-        repository.plusSnapshotMarkerInfo(markerData: SnapShotDTO(id: "", uid: "", location: "", latitude: 0.0, longitude: 0.0, imageUrl: "", title: title, description: description, hashtag: hashtag, heartCount: 0, heartCheck: ["testUid": true], myTripCount: 0, myTripCheck: ["testUid": true], hashtag2: "", time: ""))
+        repository.plusSnapshotMarkerInfo(markerData: SnapShotDTO(id: "000", uid: "", location: "", latitude: 0.0, longitude: 0.0, imageUrl: "", title: title, description: description, hashtag: hashtag, heartCount: 0, heartCheck: ["testUid": true], myTripCount: 0, myTripCheck: ["testUid": true], hashtag2: "", time: ""))
             .subscribe(onNext: { isSuccessed in
                 if isSuccessed{
                     self.isPlusMarkerSuccessed.onNext(true)

@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct SnapShotDTO: Codable{
+public struct SnapShotDTO: Codable{
     let id: String
     let uid: String
     let location: String
@@ -23,6 +23,27 @@ struct SnapShotDTO: Codable{
     let myTripCheck: [String: Bool]
     let hashtag2: String
     let time: String
+    
+    var dictionary: [String: Any] {
+        return ["id": id,
+                "uid": uid,
+                "location": location,
+                "latitude": latitude,
+                "longitude": longitude,
+                "imageUrl": imageUrl,
+                "title": title,
+                "description": description,
+                "hashtag": hashtag,
+                "heartCount": heartCount,
+                "heartCheck": heartCheck,
+                "mytripCount": myTripCount,
+                "mytripCheck": myTripCheck,
+                "hashtag2": hashtag2,
+                "time": time]
+    }
+    var nsDictionary: NSDictionary {
+        return dictionary as NSDictionary
+    }
     
     enum CodingKeys: String, CodingKey {
         case id = "id"

@@ -72,8 +72,14 @@ class FireStore{
     
     func plusSnapshotMarker(markerData: SnapShotDTO) -> Observable<Bool> {
         return Observable.create { [weak self] observable in
-            observable.onNext(true)
-            
+            do {
+                try self?.db.collection("snapshots").document(markerData.id).setData(markerData.dictionary)
+                print(markerData.dictionary)
+                observable.onNext(true)
+            } catch let error {
+                print("Error writing city to Firestore: \(error)")
+            }
+            print(markerData)
             return Disposables.create()
         }
     }

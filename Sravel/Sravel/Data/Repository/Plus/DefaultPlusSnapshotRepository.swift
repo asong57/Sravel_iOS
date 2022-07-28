@@ -16,7 +16,6 @@ class DefaultPlusSnapshotRepository: PlusSnapshotRepository {
                     if isSuccessed{
                         observable.onNext(true)
                     }
-                    
                 })
             return Disposables.create()
         }

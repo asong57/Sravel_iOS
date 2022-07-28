@@ -67,7 +67,7 @@ class LoginViewModel {
             .subscribe(onNext: { [weak self] _ in
                 guard let self = self else{return}
                 self.loginUseCase.login()
-            })
+            }).disposed(by: disposeBag)
     }
     
     private func createOutput(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -82,13 +82,13 @@ class LoginViewModel {
         
         self.loginUseCase.errorMessage.subscribe(onNext: {message in
             output.validationErrorMessage.accept(message)
-        })
+        }).disposed(by: disposeBag)
         
         self.loginUseCase.isLoginSuccessed.subscribe(onNext:  { [weak self] isSuccessful in
             output.isLoginSuccessed.accept(isSuccessful == true)
             guard let self = self else{ return }
             self.coordinator.moveToHomeViewController()
-        })
+        }).disposed(by: disposeBag)
         
         return output
     }

@@ -8,7 +8,7 @@
 import Foundation
 
 public struct SnapShotDTO: Codable{
-    let id: String
+    var id: String
     let uid: String
     let location: String
     let latitude: Double

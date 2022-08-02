@@ -37,13 +37,13 @@ class LoginViewModel {
         
         input.loginButtonDidTapEvent
             .subscribe(onNext: { [weak self] _ in
-            })
+            }).disposed(by: disposeBag)
         
         input.registerButtonDidTapEvent
             .subscribe(onNext: { [weak self] in
                 guard let self = self else{ return }
                 self.coordinator.moveToSignUpViewController()
-            })
+            }).disposed(by: disposeBag)
         
         return createOutput(from: input, disposeBag: disposeBag)
     }

@@ -23,8 +23,8 @@ final class HomeViewController: UIViewController {
         self.congifureUI()
         self.setNavigationBar()
         self.setPresentLocation()
-        self.bindViewModel()
         self.setGoogleMap()
+        self.bindViewModel()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -239,14 +239,14 @@ extension HomeViewController{
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
     }
     
-    func setGoogleMap(){
+    func setGoogleMap() {
         self.mapView?.delegate = self
     }
 }
 
 // MARK: ViewModel Bind
 
-extension HomeViewController{
+extension HomeViewController {
     func bindViewModel(){
         let input = HomeViewModel.Input(markerSet: Observable.just(true), plusButtonDidTapEvent: streetButton.rx.tap.asObservable())
         guard let viewModel = self.viewModel else{return}
@@ -298,6 +298,29 @@ extension HomeViewController{
 extension HomeViewController: CLLocationManagerDelegate{
     func setPresentLocation(){
         var locationManager: CLLocationManager!
+        /*
+        var locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.startUpdatingLocation()
+            let currentLat = locationManager.location?.coordinate.latitude ?? 0 //위도
+            let currentLng = locationManager.location?.coordinate.longitude ?? 0 //경도
+            print("현재 위치: \(currentLat) \(currentLng)")
+            let camera = GMSCameraPosition(latitude: currentLat, longitude: currentLng, zoom: 17) //현재 위도, 경도로 카메라를 이동, 줌 레벨(확대되는 정도)는 17로 설정
+            let mapID = GMSMapID(identifier: Storage().apiKey) // 발급받은 API 키로 맵 객체 생성
+            mapView = GMSMapView(frame: view.frame, mapID: mapID, camera: camera) // mapView 객체 생성
+            self.view.addSubview(mapView!) // view에 mapView를 서브뷰로 추가
+            
+            let marker = GMSMarker() // 마커 객체 생성
+            marker.position = CLLocationCoordinate2D(latitude: currentLat, longitude: currentLng) // 마커의 위치를 현재 위도, 경도로 설정
+            marker.title = "현재 위치" // 마커 터치하면 나오는 말풍선에 표시할 대제목
+            marker.snippet = "테스트" // 마커 터치하면 나오는 말풍선에 표시할 소제목
+            marker.map = mapView // 마커를 표시할 맵
+        }
+        */
         // 현재 위치 가져오기
         locationManager = CLLocationManager()
         locationManager.delegate = self
@@ -318,7 +341,7 @@ extension HomeViewController: CLLocationManagerDelegate{
         let camera = GMSCameraPosition.camera(withLatitude: 37.566508, longitude: 126.977945, zoom: 16.0)
         mapView = GMSMapView.map(withFrame: self.view.frame, camera: camera)
         self.view.addSubview(mapView!)
-        
+         
         mapView!.snp.makeConstraints{ make in
             make.bottom.equalTo(self.view).offset(-5)
             make.top.equalTo(self.scrollView.snp.bottom).offset(5)
@@ -346,4 +369,3 @@ extension HomeViewController: GMSMapViewDelegate{
         return false
     }
 }
-

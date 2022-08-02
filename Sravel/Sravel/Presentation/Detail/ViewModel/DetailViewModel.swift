@@ -24,10 +24,13 @@ class DetailViewModel {
 
     struct Input {
         let readyToGetDetailData: Observable<Bool>
+        let heartButtonDidTapEvent: Observable<Void>
+        let downloadButtonDidTapEvent: Observable<Void>
     }
     
     struct Output {
         var detailMarkerData: PublishSubject<SnapShotDTO> = PublishSubject<SnapShotDTO>()
+        var isEmptyHeartButton: PublishSubject<Bool> = PublishSubject<Bool> ()
     }
     
     init(latitude: Double, longitude: Double, coordinator: DetailFlowCoordinator, detailUseCase: DetailUseCase){
@@ -49,6 +52,16 @@ class DetailViewModel {
                 guard let self = self else { return }
                 self.detailUseCase.getMarkersData(latitude: self.latitude, longitude: self.longitude)
             }).disposed(by: disposeBag)
+        
+        input.heartButtonDidTapEvent
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                
+            }).disposed(by: disposeBag)
+        
+        input.downloadButtonDidTapEvent
+            .subscribe(onNext: { [weak self] in
+            }).disposed(by: disposeBag)
     }
     
     private func createOutput(from input: Input, disposeBag: DisposeBag) -> Output {
@@ -57,8 +70,12 @@ class DetailViewModel {
         self.detailUseCase.detailData
             .subscribe(onNext: { data in
                 output.detailMarkerData.onNext(data)
-            })
-            .disposed(by: disposeBag)
+                if data.heartCount > 0 {
+                    output.isEmptyHeartButton.onNext(false)
+                } else {
+                    output.isEmptyHeartButton.onNext(true)
+                }
+            }).disposed(by: disposeBag)
         
         return output
     }

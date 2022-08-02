@@ -56,13 +56,13 @@ final class DetailViewController: UIViewController {
     
     private lazy var heartButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "like_full"), for: .normal)
+        button.setImage(UIImage(named: "like"), for: .normal)
         return button
     }()
     
     private lazy var downloadButton: UIButton = {
         let button = UIButton()
-        button.setImage(UIImage(named: "save_full"), for: .normal)
+        button.setImage(UIImage(named: "save"), for: .normal)
         return button
     }()
     
@@ -163,7 +163,7 @@ extension DetailViewController{
 
 extension DetailViewController {
     func bindViewModel(){
-        let input = DetailViewModel.Input(readyToGetDetailData: Observable.just(true))
+        let input = DetailViewModel.Input(readyToGetDetailData: Observable.just(true), heartButtonDidTapEvent: heartButton.rx.tap.asObservable(), downloadButtonDidTapEvent: downloadButton.rx.tap.asObservable())
         guard let viewModel = self.viewModel else{return}
         let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
         bindMarker(output: output)
@@ -184,5 +184,14 @@ extension DetailViewController {
                 self.snapshotImageView.image = UIImage(data: data)
             })
             .disposed(by: disposeBag)
+        
+        output?.isEmptyHeartButton
+            .subscribe(onNext: { [weak self] isEmptyHeart in
+                if isEmptyHeart {
+                    self?.heartButton.setImage(UIImage(named: "like"), for: .normal)
+                } else {
+                    self?.heartButton.setImage(UIImage(named: "like_full"), for: .normal)
+                }
+            }).disposed(by: disposeBag)
     }
 }

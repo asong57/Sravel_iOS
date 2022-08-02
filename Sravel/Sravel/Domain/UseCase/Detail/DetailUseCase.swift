@@ -8,25 +8,31 @@
 import Foundation
 import RxSwift
 
-class DetailUseCase{
+class DetailUseCase {
     
     // MARK: Private Property
     
     private let repository: DetailRepository
     private let disposeBag = DisposeBag()
+    private var id: String = ""
     
     // MARK: Internal Property
     
     var detailData = PublishSubject<SnapShotDTO>()
 
-    init(repository: DetailRepository){
+    init(repository: DetailRepository ){
         self.repository = repository
     }
     
-    func getMarkersData(latitude: Double, longitude: Double){
+    func getMarkersData(latitude: Double, longitude: Double) {
         repository.getDetailData(latitude: latitude, longitude: longitude)
             .subscribe(onNext: { [weak self] data in
                 self?.detailData.onNext(data)
+                self?.id = data.id
             }).disposed(by: disposeBag)
+    }
+    
+    func updateHeartCountData() {
+        
     }
 }

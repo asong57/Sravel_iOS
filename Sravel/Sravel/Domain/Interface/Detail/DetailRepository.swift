@@ -10,4 +10,5 @@ import RxSwift
 
 protocol DetailRepository{
     func getDetailData(latitude: Double, longitude: Double) -> Observable<SnapShotDTO>
+    func updateHeartCount(id: String, uid: String) -> Observable<SnapShotDTO>
 }

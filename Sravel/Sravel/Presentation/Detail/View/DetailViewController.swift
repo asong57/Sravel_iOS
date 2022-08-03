@@ -14,6 +14,7 @@ final class DetailViewController: UIViewController {
     
     var viewModel: DetailViewModel?
     private var disposeBag = DisposeBag()
+    private var uid = "songUid"
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -180,18 +181,14 @@ extension DetailViewController {
                 let timeStr: String = String(time[time.index(time.startIndex, offsetBy: 0)...time.index(time.startIndex, offsetBy: 3)]) + "." + String(time[time.index(time.startIndex, offsetBy: 4)...time.index(time.startIndex, offsetBy: 5)]) + "." + String(time[time.index(time.startIndex, offsetBy: 6)...time.index(time.startIndex, offsetBy: 7)])
                 self.dateLabel.text = timeStr
                 let url = URL(string: data.imageUrl + ".jpg")
-                let data = try! Data(contentsOf: url!)
-                self.snapshotImageView.image = UIImage(data: data)
+                let imageData = try! Data(contentsOf: url!)
+                self.snapshotImageView.image = UIImage(data: imageData)
+                if let _ = data.heartCheck[self.uid] {
+                    self.heartButton.setImage(UIImage(named: "like_full"), for: .normal)
+                } else {
+                    self.heartButton.setImage(UIImage(named: "like"), for: .normal)
+                }
             })
             .disposed(by: disposeBag)
-        
-        output?.isEmptyHeartButton
-            .subscribe(onNext: { [weak self] isEmptyHeart in
-                if isEmptyHeart {
-                    self?.heartButton.setImage(UIImage(named: "like"), for: .normal)
-                } else {
-                    self?.heartButton.setImage(UIImage(named: "like_full"), for: .normal)
-                }
-            }).disposed(by: disposeBag)
     }
 }

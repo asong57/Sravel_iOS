@@ -87,3 +87,57 @@ class FireStore{
         }
     }
 }
+
+extension FireStore {
+    func updateHeartCount(id: String, uid: String) -> Observable<SnapShotDTO> {
+        return Observable.create { [weak self] observable in
+            let reference = self!.db.collection("snapshots").document(id)
+            self?.db.runTransaction({ (transaction, errorPointer) -> Any? in
+                let sfDocument: DocumentSnapshot
+                do {
+                    try sfDocument = transaction.getDocument(reference)
+                } catch let fetchError as NSError {
+                    errorPointer?.pointee = fetchError
+                    return nil
+                }
+                guard let heartCheck = sfDocument.data()?["heartCheck"] as? [String: Bool], let heartCount = sfDocument.data()?["heartCount"] as? Int, let location =  sfDocument.data()?["location"] as? String, let latitude =  sfDocument.data()?["latitude"] as? Double, let longitude =  sfDocument.data()?["longitude"] as? Double, let imageUrl =  sfDocument.data()?["imageUrl"] as? String, let title =  sfDocument.data()?["title"] as? String, let description =  sfDocument.data()?["description"] as? String, let hashtag =  sfDocument.data()?["hashtag"] as? String, let myTripCount =  sfDocument.data()?["mytripCount"] as? Int, let myTripCheck =  sfDocument.data()?["mytripCheck"] as? [String: Bool], let hashtag2 =  sfDocument.data()?["hashtag2"] as? String, let time =  sfDocument.data()?["time"] as? String else {
+                    let error = NSError(
+                        domain: "AppErrorDomain",
+                        code: -1,
+                        userInfo: [
+                            NSLocalizedDescriptionKey: "Unable to retrieve population from snapshot \(sfDocument)"
+                        ]
+                    )
+                    errorPointer?.pointee = error
+                    return nil
+                }
+                print("HearCheck : \(heartCheck)")
+                var updateHeartCheck = heartCheck
+                var updatedHeartCount = heartCount
+                if let _ = heartCheck[uid] {
+                    updateHeartCheck[uid] = nil
+                    updatedHeartCount = heartCount - 1
+                    transaction.updateData(["heartCount": updatedHeartCount], forDocument: reference)
+                    transaction.updateData(["heartCheck": updateHeartCheck], forDocument: reference)
+                    
+                } else {
+                    updateHeartCheck[uid] = true
+                    updatedHeartCount = heartCount + 1
+                    transaction.updateData(["heartCount": updatedHeartCount], forDocument: reference)
+                    transaction.updateData(["heartCheck": updateHeartCheck], forDocument: reference)
+                }
+                let updatedDto = SnapShotDTO(id: id, uid: uid, location: location, latitude: latitude, longitude: longitude, imageUrl: imageUrl, title: title, description: description, hashtag: hashtag, heartCount: updatedHeartCount, heartCheck: updateHeartCheck, myTripCount: myTripCount, myTripCheck: myTripCheck, hashtag2: hashtag2, time: time)
+                print(updatedDto)
+                observable.onNext(updatedDto)
+                return nil
+            }) { (object, error) in
+                if let error = error {
+                    print("Transaction failed: \(error)")
+                } else {
+                    print("Transaction successfully committed!")
+                }
+            }
+            return Disposables.create()
+        }
+    }
+}

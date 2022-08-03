@@ -18,4 +18,14 @@ class DefaultDetailRepository: DetailRepository{
             return Disposables.create()
         }
     }
+    
+    func updateHeartCount(id: String, uid: String) -> Observable<SnapShotDTO> {
+        return Observable.create { observable in
+            FireStore.fireStore.updateHeartCount(id: id, uid: uid)
+                .subscribe(onNext: { data in
+                    observable.onNext(data)
+                })
+            return Disposables.create()
+        }
+    }
 }

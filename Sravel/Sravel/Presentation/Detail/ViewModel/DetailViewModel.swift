@@ -21,6 +21,7 @@ class DetailViewModel {
     private var coordinator: DetailFlowCoordinator
     private let disposeBag = DisposeBag()
     private let detailUseCase: DetailUseCase
+    private let uid: String = "songUid"
 
     struct Input {
         let readyToGetDetailData: Observable<Bool>
@@ -30,7 +31,6 @@ class DetailViewModel {
     
     struct Output {
         var detailMarkerData: PublishSubject<SnapShotDTO> = PublishSubject<SnapShotDTO>()
-        var isEmptyHeartButton: PublishSubject<Bool> = PublishSubject<Bool> ()
     }
     
     init(latitude: Double, longitude: Double, coordinator: DetailFlowCoordinator, detailUseCase: DetailUseCase){
@@ -56,7 +56,7 @@ class DetailViewModel {
         input.heartButtonDidTapEvent
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
-                
+                self.detailUseCase.updateHeartCountData()
             }).disposed(by: disposeBag)
         
         input.downloadButtonDidTapEvent
@@ -70,10 +70,12 @@ class DetailViewModel {
         self.detailUseCase.detailData
             .subscribe(onNext: { data in
                 output.detailMarkerData.onNext(data)
-                if data.heartCount > 0 {
-                    output.isEmptyHeartButton.onNext(false)
-                } else {
-                    output.isEmptyHeartButton.onNext(true)
+            }).disposed(by: disposeBag)
+        
+        self.detailUseCase.updateData
+            .subscribe(onNext: { data in
+                DispatchQueue.main.async {
+                    output.detailMarkerData.onNext(data)
                 }
             }).disposed(by: disposeBag)
         

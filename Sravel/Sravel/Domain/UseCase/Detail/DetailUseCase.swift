@@ -15,10 +15,12 @@ class DetailUseCase {
     private let repository: DetailRepository
     private let disposeBag = DisposeBag()
     private var id: String = ""
+    private var uid: String = "songUid"
     
     // MARK: Internal Property
     
     var detailData = PublishSubject<SnapShotDTO>()
+    var updateData = PublishSubject<SnapShotDTO>()
 
     init(repository: DetailRepository ){
         self.repository = repository
@@ -33,6 +35,9 @@ class DetailUseCase {
     }
     
     func updateHeartCountData() {
-        
+        repository.updateHeartCount(id: id, uid: uid)
+            .subscribe(onNext: { [weak self] data in
+                self?.updateData.onNext(data)
+            }).disposed(by: disposeBag)
     }
 }

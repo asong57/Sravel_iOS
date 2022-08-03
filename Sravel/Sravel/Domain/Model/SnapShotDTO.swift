@@ -17,10 +17,10 @@ public struct SnapShotDTO: Codable{
     let title: String
     let description: String
     let hashtag: String
-    let heartCount: Int
-    let heartCheck: [String: Bool]
-    let myTripCount: Int
-    let myTripCheck: [String: Bool]
+    var heartCount: Int
+    var heartCheck: [String: Bool]
+    var myTripCount: Int
+    var myTripCheck: [String: Bool]
     let hashtag2: String
     let time: String
     

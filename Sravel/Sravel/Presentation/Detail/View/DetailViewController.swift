@@ -49,10 +49,15 @@ final class DetailViewController: UIViewController {
     
     private lazy var likeCountLabel: UILabel = {
         let label = UILabel()
-        label.text = "1"
+        label.text = "  0"
         label.textColor = .blue
-        //label.backgroundColor = UIColor(patternImage: UIImage(named: "blank_like_number")!)
         return label
+    }()
+    
+    private lazy var likeCountImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "blank_like_number")
+        return imageView
     }()
     
     private lazy var heartButton: UIButton = {
@@ -95,7 +100,7 @@ final class DetailViewController: UIViewController {
         stack.spacing = 15.0
         stack.alignment = .fill
         stack.distribution = .fill
-        [ self.heartButton, self.downloadButton].forEach { stack.addArrangedSubview($0) }
+        [ self.likeCountLabel, self.heartButton, self.downloadButton].forEach { stack.addArrangedSubview($0) }
         return stack
     }()
 
@@ -108,6 +113,7 @@ extension DetailViewController{
         self.view.addSubview(titleLabel)
         self.view.addSubview(contentLabel)
         self.view.addSubview(hashtagLabel)
+        self.likeCountLabel.addSubview(likeCountImageView)
     }
     
     func congifureUI(){
@@ -123,8 +129,13 @@ extension DetailViewController{
         }
         
         likeCountLabel.snp.makeConstraints{ make in
-            //make.width.equalTo(33)
-            //make.height.equalTo(28)
+            make.width.equalTo(38)
+            make.height.equalTo(28)
+        }
+        
+        likeCountImageView.snp.makeConstraints{ make in
+            make.width.equalTo(38)
+            make.height.equalTo(28)
         }
         
         stackView.snp.makeConstraints{ make in
@@ -188,6 +199,7 @@ extension DetailViewController {
                 } else {
                     self.heartButton.setImage(UIImage(named: "like"), for: .normal)
                 }
+                self.likeCountLabel.text = "  \(data.heartCount)"
             })
             .disposed(by: disposeBag)
     }

@@ -200,6 +200,11 @@ extension DetailViewController {
                     self.heartButton.setImage(UIImage(named: "like"), for: .normal)
                 }
                 self.likeCountLabel.text = "  \(data.heartCount)"
+                if let _ = data.myTripCheck[self.uid] {
+                    self.downloadButton.setImage(UIImage(named: "save_full"), for: .normal)
+                } else {
+                    self.downloadButton.setImage(UIImage(named: "save"), for: .normal)
+                }
             })
             .disposed(by: disposeBag)
     }

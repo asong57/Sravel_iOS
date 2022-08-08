@@ -16,3 +16,12 @@ pod 'GoogleMaps', '7.0.0'
 pod 'GooglePlaces', '7.0.0'
 
 end
+
+target 'SravelTests' do
+  use_frameworks!
+  inherit! :search_paths
+  # Pods for testing
+  pod 'Firebase/Analytics'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Firestore'
+  end

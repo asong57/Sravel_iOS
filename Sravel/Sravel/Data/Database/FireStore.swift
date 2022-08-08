@@ -89,7 +89,7 @@ class FireStore{
 }
 
 extension FireStore {
-    func updateHeartCount(id: String, uid: String) -> Observable<SnapShotDTO> {
+    func updateMarkerData(id: String, uid: String, isHeartUpdated: Bool, isDownloadUpdated: Bool) -> Observable<SnapShotDTO> {
         return Observable.create { [weak self] observable in
             let reference = self!.db.collection("snapshots").document(id)
             self?.db.runTransaction({ (transaction, errorPointer) -> Any? in
@@ -111,24 +111,38 @@ extension FireStore {
                     errorPointer?.pointee = error
                     return nil
                 }
-                print("HearCheck : \(heartCheck)")
-                var updateHeartCheck = heartCheck
-                var updatedHeartCount = heartCount
-                if let _ = heartCheck[uid] {
-                    updateHeartCheck[uid] = nil
-                    updatedHeartCount = heartCount - 1
+                if isHeartUpdated {
+                    var updateHeartCheck = heartCheck
+                    var updatedHeartCount = heartCount
+                    if let _ = heartCheck[uid] {
+                        updateHeartCheck[uid] = nil
+                        updatedHeartCount = heartCount - 1
+                    } else {
+                        updateHeartCheck[uid] = true
+                        updatedHeartCount = heartCount + 1
+                    }
                     transaction.updateData(["heartCount": updatedHeartCount], forDocument: reference)
                     transaction.updateData(["heartCheck": updateHeartCheck], forDocument: reference)
-                    
-                } else {
-                    updateHeartCheck[uid] = true
-                    updatedHeartCount = heartCount + 1
-                    transaction.updateData(["heartCount": updatedHeartCount], forDocument: reference)
-                    transaction.updateData(["heartCheck": updateHeartCheck], forDocument: reference)
+                    let updatedDto = SnapShotDTO(id: id, uid: uid, location: location, latitude: latitude, longitude: longitude, imageUrl: imageUrl, title: title, description: description, hashtag: hashtag, heartCount: updatedHeartCount, heartCheck: updateHeartCheck, myTripCount: myTripCount, myTripCheck: myTripCheck, hashtag2: hashtag2, time: time)
+                    print(updatedDto)
+                    observable.onNext(updatedDto)
+                } else if isDownloadUpdated {
+                    print("downloadCheck : \(myTripCheck)")
+                    var updateMyTripCheck = myTripCheck
+                    var updatedMyTripCount = myTripCount
+                    if let _ = myTripCheck[uid] {
+                        updateMyTripCheck[uid] = nil
+                        updatedMyTripCount = myTripCount - 1
+                    } else {
+                        updateMyTripCheck[uid] = true
+                        updatedMyTripCount = myTripCount + 1
+                    }
+                    transaction.updateData(["mytripCount": updatedMyTripCount], forDocument: reference)
+                    transaction.updateData(["mytripCheck": updateMyTripCheck], forDocument: reference)
+                    let updatedDto = SnapShotDTO(id: id, uid: uid, location: location, latitude: latitude, longitude: longitude, imageUrl: imageUrl, title: title, description: description, hashtag: hashtag, heartCount: heartCount, heartCheck: heartCheck, myTripCount: updatedMyTripCount, myTripCheck: updateMyTripCheck, hashtag2: hashtag2, time: time)
+                    print(updatedDto)
+                    observable.onNext(updatedDto)
                 }
-                let updatedDto = SnapShotDTO(id: id, uid: uid, location: location, latitude: latitude, longitude: longitude, imageUrl: imageUrl, title: title, description: description, hashtag: hashtag, heartCount: updatedHeartCount, heartCheck: updateHeartCheck, myTripCount: myTripCount, myTripCheck: myTripCheck, hashtag2: hashtag2, time: time)
-                print(updatedDto)
-                observable.onNext(updatedDto)
                 return nil
             }) { (object, error) in
                 if let error = error {

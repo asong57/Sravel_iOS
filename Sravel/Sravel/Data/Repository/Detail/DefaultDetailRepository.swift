@@ -9,22 +9,39 @@ import Foundation
 import RxSwift
 
 class DefaultDetailRepository: DetailRepository{
+    private var disposeBag = DisposeBag()
+    private let serialQueue = DispatchQueue(label: "updateSerialQueue")
+    
     func getDetailData(latitude: Double, longitude: Double) -> Observable<SnapShotDTO> {
-        return Observable.create { observable in
+        return Observable.create { [weak self] observable in
             FireStore.fireStore.getDetailData(latitude: latitude, longitude: longitude)
                 .subscribe(onNext: { data in
                     observable.onNext(data)
-                })
+                }).disposed(by: self!.disposeBag)
             return Disposables.create()
         }
     }
     
     func updateHeartCount(id: String, uid: String) -> Observable<SnapShotDTO> {
-        return Observable.create { observable in
-            FireStore.fireStore.updateHeartCount(id: id, uid: uid)
-                .subscribe(onNext: { data in
-                    observable.onNext(data)
-                })
+        return Observable.create { [weak self] observable in
+            self?.serialQueue.async {
+                FireStore.fireStore.updateMarkerData(id: id, uid: uid, isHeartUpdated: true, isDownloadUpdated: false)
+                    .subscribe(onNext: { data in
+                        observable.onNext(data)
+                    }).disposed(by: self!.disposeBag)
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func updateDownloadCount(id: String, uid: String) -> Observable<SnapShotDTO> {
+        return Observable.create { [weak self] observable in
+            self?.serialQueue.async {
+                FireStore.fireStore.updateMarkerData(id: id, uid: uid, isHeartUpdated: false, isDownloadUpdated: true)
+                    .subscribe(onNext: { data in
+                        observable.onNext(data)
+                    }).disposed(by: self!.disposeBag)
+            }
             return Disposables.create()
         }
     }

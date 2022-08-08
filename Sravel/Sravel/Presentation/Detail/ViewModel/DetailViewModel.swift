@@ -61,6 +61,8 @@ class DetailViewModel {
         
         input.downloadButtonDidTapEvent
             .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.detailUseCase.updateDownloadData()
             }).disposed(by: disposeBag)
     }
     

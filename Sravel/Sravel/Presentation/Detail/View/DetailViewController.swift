@@ -25,13 +25,25 @@ final class DetailViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationItem.title = "자세히 보기"
+        setNavigationBar()
     }
     
     static func create(with viewModel: DetailViewModel) -> DetailViewController{
         let view = DetailViewController()
         view.viewModel = viewModel
         return view
+    }
+    
+    func setNavigationBar() {
+        self.navigationItem.title = "자세히 보기"
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "option"),
+                                                                 style: UIBarButtonItem.Style.plain,
+                                                                 target: self, action: #selector(optionButtonClicked(_:)))
+    }
+    
+    @objc func optionButtonClicked(_ sender: Any) {
+        // 여기에 구현!
+        print("option clicked")
     }
     
     private lazy var snapshotImageView: UIImageView = {

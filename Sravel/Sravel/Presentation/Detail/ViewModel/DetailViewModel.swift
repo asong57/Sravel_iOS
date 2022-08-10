@@ -27,6 +27,7 @@ class DetailViewModel {
         let readyToGetDetailData: Observable<Bool>
         let heartButtonDidTapEvent: Observable<Void>
         let downloadButtonDidTapEvent: Observable<Void>
+        let deleteButtonDidTapEvent: PublishSubject<Bool>
     }
     
     struct Output {
@@ -63,6 +64,14 @@ class DetailViewModel {
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
                 self.detailUseCase.updateDownloadData()
+            }).disposed(by: disposeBag)
+        
+        input.deleteButtonDidTapEvent
+            .subscribe(onNext: { [weak self] isTapped in
+                guard let self = self else { return }
+                if isTapped {
+                    self.detailUseCase.deleteSnapshotData()
+                }
             }).disposed(by: disposeBag)
     }
     

@@ -47,4 +47,11 @@ class DetailUseCase {
                 self?.updateData.onNext(data)
             }).disposed(by: disposeBag)
     }
+    
+    func deleteSnapshotData() {
+        repository.updateDownloadCount(id: id, uid: uid)
+            .subscribe(onNext: { [weak self] data in
+                self?.updateData.onNext(data)
+            }).disposed(by: disposeBag)
+    }
 }

@@ -15,6 +15,7 @@ final class DetailViewController: UIViewController {
     var viewModel: DetailViewModel?
     private var disposeBag = DisposeBag()
     private var uid = "songUid"
+    private var deleteButtonTapped = PublishSubject<Bool>()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,8 +43,34 @@ final class DetailViewController: UIViewController {
     }
     
     @objc func optionButtonClicked(_ sender: Any) {
-        // 여기에 구현!
-        print("option clicked")
+        setOptionActionSheet()
+    }
+    
+    func setOptionActionSheet() {
+        let optionMenu = UIAlertController(title: nil, message: "수정 및 삭제", preferredStyle: .actionSheet)
+        let deleteAction = UIAlertAction(title: "수정", style: .default, handler: {
+            (alert: UIAlertAction!) -> Void in
+        })
+        let saveAction = UIAlertAction(title: "삭제", style: .destructive, handler: { [weak self] (alert: UIAlertAction!) -> Void in
+            self?.setDeleteOptionAlert()
+        })
+        let cancelAction = UIAlertAction(title: "취소", style: .cancel, handler: {
+            (alert: UIAlertAction!) -> Void in
+        })
+        optionMenu.addAction(deleteAction)
+        optionMenu.addAction(saveAction)
+        optionMenu.addAction(cancelAction)
+        self.present(optionMenu, animated: true, completion: nil)
+    }
+    
+    func setDeleteOptionAlert(){
+        let sheet = UIAlertController(title: "스냅샷 삭제", message: "삭제하시겠습니까?", preferredStyle: .alert)
+        sheet.addAction(UIAlertAction(title: "네!", style: .destructive, handler: { [weak self] _ in
+            print("네 클릭")
+            self?.deleteButtonTapped.onNext(true)
+        }))
+        sheet.addAction(UIAlertAction(title: "아니오!", style: .cancel, handler: { _ in print("아니오 클릭") }))
+        present(sheet, animated: true)
     }
     
     private lazy var snapshotImageView: UIImageView = {
@@ -187,7 +214,7 @@ extension DetailViewController{
 
 extension DetailViewController {
     func bindViewModel(){
-        let input = DetailViewModel.Input(readyToGetDetailData: Observable.just(true), heartButtonDidTapEvent: heartButton.rx.tap.asObservable(), downloadButtonDidTapEvent: downloadButton.rx.tap.asObservable())
+        let input = DetailViewModel.Input(readyToGetDetailData: Observable.just(true), heartButtonDidTapEvent: heartButton.rx.tap.asObservable(), downloadButtonDidTapEvent: downloadButton.rx.tap.asObservable(), deleteButtonDidTapEvent: deleteButtonTapped)
         guard let viewModel = self.viewModel else{return}
         let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
         bindMarker(output: output)

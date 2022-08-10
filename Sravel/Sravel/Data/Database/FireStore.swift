@@ -72,16 +72,26 @@ class FireStore{
     
     func plusSnapshotMarker(markerData: SnapShotDTO) -> Observable<Bool> {
         return Observable.create { [weak self] observable in
-            do {
                 let ref = self?.db.collection("snapshots")
                 let id = ref!.document().documentID
                 var marker: SnapShotDTO = markerData
                 marker.id = id
-                try self?.db.collection("snapshots").document(id).setData(marker.dictionary)
+                self?.db.collection("snapshots").document(id).setData(marker.dictionary)
                 print(marker.dictionary)
                 observable.onNext(true)
-            } catch let error {
-                print("Error writing city to Firestore: \(error)")
+            return Disposables.create()
+        }
+    }
+    
+    func deleteSnapshotMarker(id: String, uid: String) -> Observable<Bool> {
+        return Observable.create { [weak self] observable in
+            self?.db.collection("snapshots").document(id).delete() { err in
+                if let err = err {
+                    print("Error removing document: \(err)")
+                } else {
+                    print("Document successfully removed!")
+                    observable.onNext(true)
+                }
             }
             return Disposables.create()
         }

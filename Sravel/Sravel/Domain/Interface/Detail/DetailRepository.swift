@@ -12,4 +12,5 @@ protocol DetailRepository{
     func getDetailData(latitude: Double, longitude: Double) -> Observable<SnapShotDTO>
     func updateHeartCount(id: String, uid: String) -> Observable<SnapShotDTO>
     func updateDownloadCount(id: String, uid: String) -> Observable<SnapShotDTO>
+    func deleteSnapshotData(id: String, uid: String) -> Observable<Bool>
 }

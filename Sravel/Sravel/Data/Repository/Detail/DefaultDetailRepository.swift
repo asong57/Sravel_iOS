@@ -45,4 +45,16 @@ class DefaultDetailRepository: DetailRepository{
             return Disposables.create()
         }
     }
+    
+    func deleteSnapshotData(id: String, uid: String) -> Observable<Bool> {
+        return Observable.create { [weak self] observable in
+            self?.serialQueue.async {
+                FireStore.fireStore.deleteSnapshotMarker(id: id, uid: uid)
+                    .subscribe(onNext: { isDeletedSucceded in
+                        observable.onNext(isDeletedSucceded)
+                    }).disposed(by: self!.disposeBag)
+            }
+            return Disposables.create()
+        }
+    }
 }

@@ -90,6 +90,13 @@ class DetailViewModel {
                 }
             }).disposed(by: disposeBag)
         
+        self.detailUseCase.isSucceededDeleting
+            .subscribe(onNext: { [weak self] isSucceeded in
+                if isSucceeded {
+                    self?.coordinator.pop()
+                }
+            }).disposed(by: disposeBag)
+        
         return output
     }
 }

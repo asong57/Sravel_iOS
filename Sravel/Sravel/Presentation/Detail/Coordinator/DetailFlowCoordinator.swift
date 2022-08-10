@@ -20,4 +20,8 @@ class DetailFlowCoordinator{
         let vc = detailDIContainer.makeDetailViewController(coordinator: self)
         navigationController?.pushViewController(vc, animated: false)
     }
+    
+    func pop() {
+        navigationController?.popViewController(animated: true)
+    }
 }

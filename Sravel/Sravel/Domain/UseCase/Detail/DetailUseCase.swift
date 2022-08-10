@@ -21,6 +21,7 @@ class DetailUseCase {
     
     var detailData = PublishSubject<SnapShotDTO>()
     var updateData = PublishSubject<SnapShotDTO>()
+    var isSucceededDeleting = PublishSubject<Bool>()
 
     init(repository: DetailRepository ){
         self.repository = repository
@@ -49,9 +50,9 @@ class DetailUseCase {
     }
     
     func deleteSnapshotData() {
-        repository.updateDownloadCount(id: id, uid: uid)
-            .subscribe(onNext: { [weak self] data in
-                self?.updateData.onNext(data)
+        repository.deleteSnapshotData(id: id, uid: uid)
+            .subscribe(onNext: { [weak self] isSucceeded in
+                self?.isSucceededDeleting.onNext(isSucceeded)
             }).disposed(by: disposeBag)
     }
 }

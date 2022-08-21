@@ -14,6 +14,7 @@ pod 'Firebase/Auth'
 pod 'Firebase/Firestore'
 pod 'GoogleMaps', '7.0.0'
 pod 'GooglePlaces', '7.0.0'
+pod "LiquidFloatingActionButton"
 
 end
 

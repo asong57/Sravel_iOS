@@ -154,6 +154,11 @@ final class HomeViewController: UIViewController {
         let view: UIScrollView = UIScrollView()
         return view
     }()
+    
+    lazy var searchButton: UIButton = {
+        let button = UIButton(frame: CGRect(x: 0, y: 0, width: 40, height: 40))
+        return button
+    }()
 }
 extension HomeViewController{
     func configureSubViews() {
@@ -235,6 +240,7 @@ extension HomeViewController{
             imageView.image = img
         }
         view.addSubview(imageView)
+        view.addSubview(searchButton)
         let rightBarButtonItem = UIBarButtonItem(customView: view ?? UIView())
         self.navigationItem.rightBarButtonItem = rightBarButtonItem
     }
@@ -248,7 +254,7 @@ extension HomeViewController{
 
 extension HomeViewController {
     func bindViewModel(){
-        let input = HomeViewModel.Input(markerSet: Observable.just(true), plusButtonDidTapEvent: streetButton.rx.tap.asObservable())
+        let input = HomeViewModel.Input(markerSet: Observable.just(true), plusButtonDidTapEvent: streetButton.rx.tap.asObservable(), searchButtonDidTapEvent: searchButton.rx.tap.asObservable())
         guard let viewModel = self.viewModel else{return}
         let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
         self.bindMarkers(output: output)

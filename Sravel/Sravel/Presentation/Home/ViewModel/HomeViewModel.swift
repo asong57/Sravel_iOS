@@ -17,6 +17,7 @@ class HomeViewModel {
     struct Input {
         let markerSet: Observable<Bool>
         let plusButtonDidTapEvent: Observable<Void>
+        let searchButtonDidTapEvent: Observable<Void>
     }
     
     struct Output {
@@ -43,7 +44,12 @@ class HomeViewModel {
         input.plusButtonDidTapEvent
             .subscribe(onNext: { [weak self] _ in
                 self?.coordinator.moveToPlusSnapshotViewController()
-            })
+            }).disposed(by: disposeBag)
+        
+        input.searchButtonDidTapEvent
+            .subscribe(onNext: { [weak self] _ in
+                self?.coordinator.moveToHomeSearchViewController()
+            }).disposed(by: disposeBag)
     }
     
     private func createOutput(from input: Input, disposeBag: DisposeBag) -> Output {

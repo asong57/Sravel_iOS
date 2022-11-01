@@ -15,24 +15,35 @@ final class HomeSearchViewController: UIViewController {
         super.viewDidLoad()
         self.setupSearchController()
         self.setupTableView()
+        self.configureTableView()
     }
     
     private lazy var resultTableView: UITableView = {
         let tableView = UITableView()
-        
         return tableView
     }()
     
     func setupSearchController() {
-        let searchController = UISearchController(searchResultsController: nil)
         self.navigationItem.title = "해시태그로 검색"
+        let searchController = UISearchController(searchResultsController: nil)
+        searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "검색어를 입력하세요"
-        self.navigationItem.searchController = searchController
+        self.resultTableView.tableHeaderView = searchController.searchBar;
     }
     
     func setupTableView() {
         self.resultTableView.delegate = self
         self.resultTableView.dataSource = self
+    }
+    
+    func configureTableView() {
+        view.addSubview(resultTableView)
+        resultTableView.snp.makeConstraints{ make in
+            make.left.equalTo(self.view)
+            make.right.equalTo(self.view)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.bottom.equalTo(self.view)
+        }
     }
 }
 

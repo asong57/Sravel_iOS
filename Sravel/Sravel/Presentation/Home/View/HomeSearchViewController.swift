@@ -9,7 +9,7 @@ import UIKit
 
 final class HomeSearchViewController: UIViewController {
     
-    var arr = ["Zedd", "Alan Walker", "David Guetta", "Avicii", "Marshmello", "Steve Aoki", "R3HAB", "Armin van Buuren", "Skrillex", "Illenium", "The Chainsmokers", "Don Diablo", "Afrojack", "Tiesto", "KSHMR", "DJ Snake", "Kygo", "Galantis", "Major Lazer", "Vicetone"]
+    private var searchDataArr: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,11 +23,14 @@ final class HomeSearchViewController: UIViewController {
         return tableView
     }()
     
+    private let searchController = UISearchController(searchResultsController: nil)
+    
     func setupSearchController() {
         self.navigationItem.title = "해시태그로 검색"
-        let searchController = UISearchController(searchResultsController: nil)
         searchController.hidesNavigationBarDuringPresentation = false
         searchController.searchBar.placeholder = "검색어를 입력하세요"
+        searchController.delegate = self
+        searchController.searchBar.delegate = self
         self.resultTableView.tableHeaderView = searchController.searchBar;
     }
     
@@ -48,19 +51,40 @@ final class HomeSearchViewController: UIViewController {
 }
 
 extension HomeSearchViewController: UITableViewDelegate, UITableViewDataSource {
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.arr.count
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.searchDataArr.count
     }
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.text = self.arr[indexPath.row]
+        cell.textLabel?.text = self.searchDataArr[indexPath.row]
         return cell
     }
 }
 
-extension HomeSearchViewController: UISearchResultsUpdating {
-    func updateSearchResults(for searchController: UISearchController) {
-        print(searchController.searchBar.text)
+extension HomeSearchViewController: UISearchControllerDelegate {
+    func willPresentSearchController(_ searchController: UISearchController) {
+        print(#function, "updateQueriesSuggestions")
+    }
+
+    func willDismissSearchController(_ searchController: UISearchController) {
+        print(#function, "updateQueriesSuggestions")
+    }
+
+    func didDismissSearchController(_ searchController: UISearchController) {
+        print(#function, "updateQueriesSuggestions")
+    }
+}
+
+extension HomeSearchViewController: UISearchBarDelegate {
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let searchText = searchBar.text, !searchText.isEmpty else { return }
+        searchController.isActive = false
+        searchDataArr.insert(searchText, at: 0)
+        resultTableView.reloadData()
+    }
+
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        print("cancel")
     }
 }

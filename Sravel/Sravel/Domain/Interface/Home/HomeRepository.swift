@@ -10,4 +10,5 @@ import RxSwift
 
 protocol HomeRepository{
     func getMarkersData() -> Observable<[SnapShotDTO]>
+    func getMarkersDataWithHashtag(_ hashtag: String) -> Observable<[SnapShotDTO]>
 }

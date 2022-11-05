@@ -254,7 +254,7 @@ extension HomeViewController{
 
 extension HomeViewController {
     func bindViewModel(){
-        let input = HomeViewModel.Input(markerSet: Observable.just(true), plusButtonDidTapEvent: streetButton.rx.tap.asObservable(), searchButtonDidTapEvent: searchButton.rx.tap.asObservable())
+        let input = HomeViewModel.Input(markerSet: Observable.just(true), plusButtonDidTapEvent: streetButton.rx.tap.asObservable(), searchButtonDidTapEvent: searchButton.rx.tap.asObservable(), streetButtonDidTapEvent: streetButton.rx.tap.asObservable(), skyButtonDidTapEvent: skyButton.rx.tap.asObservable(), oceanButtonDidTapEvent: oceanButton.rx.tap.asObservable(), natureButtonDidTapEvent: natureButton.rx.tap.asObservable(), animalButtonDidTapEvent: animalButton.rx.tap.asObservable(), landmarkButtonDidTapEvent: landmarkButton.rx.tap.asObservable(), foodButtonDidTapEvent: foodButton.rx.tap.asObservable(), countryButtonDidTapEvent: countryButton.rx.tap.asObservable(), cityButtonDidTapEvent: cityButton.rx.tap.asObservable(), etcButtonDidTapEvent: etcButton.rx.tap.asObservable())
         guard let viewModel = self.viewModel else{return}
         let output = viewModel.transform(from: input, disposeBag: self.disposeBag)
         self.bindMarkers(output: output)

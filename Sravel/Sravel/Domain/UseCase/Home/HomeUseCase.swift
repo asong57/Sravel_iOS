@@ -29,4 +29,11 @@ class HomeUseCase{
                 self?.markersData.onNext(dataArr)
             }).disposed(by: disposeBag)
     }
+    
+    func getMarkersDataWithHashtag(_ hashtag: String){
+        repository.getMarkersDataWithHashtag(hashtag)
+            .subscribe(onNext: { [weak self] dataArr in
+                self?.markersData.onNext(dataArr)
+            }).disposed(by: disposeBag)
+    }
 }

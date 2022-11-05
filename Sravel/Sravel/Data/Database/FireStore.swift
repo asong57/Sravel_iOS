@@ -165,3 +165,34 @@ extension FireStore {
         }
     }
 }
+
+extension FireStore {
+    func getMarkersLocationSetFromHashtag(_ hashtag: String) -> Observable<[SnapShotDTO]> {
+        print("Get Markers 실행됨")
+        return Observable.create { [weak self] observable in
+            var dataArr: [SnapShotDTO] = []
+            self?.db.collection("snapshots").getDocuments() { (querySnapshot, err) in
+                if let err = err {
+                    print("FireStore : Error getting documents: \(err)")
+                } else {
+                    let decoder =  JSONDecoder()
+                    for document in querySnapshot!.documents {
+                        do {
+                            let data = document.data()
+                            let jsonData = try JSONSerialization.data(withJSONObject:data)
+                            let markerInfo = try decoder.decode(SnapShotDTO.self, from: jsonData)
+                            if markerInfo.hashtag == hashtag || markerInfo.hashtag2 == hashtag {
+                                dataArr.append(markerInfo)
+                                print("\(markerInfo)")
+                            }
+                        } catch let err {
+                            print("err: \(err)")
+                        }
+                    }
+                    observable.onNext(dataArr)
+                }
+            }
+            return Disposables.create()
+        }
+    }
+}

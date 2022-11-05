@@ -18,4 +18,14 @@ class DefaultHomeRepository: HomeRepository{
             return Disposables.create()
         }
     }
+    
+    func getMarkersDataWithHashtag(_ hashtag: String) -> Observable<[SnapShotDTO]> {
+        return Observable.create { observable in
+            FireStore.fireStore.getMarkersLocationSetFromHashtag(hashtag)
+                .subscribe(onNext: { dataArr in
+                    observable.onNext(dataArr)
+                })
+            return Disposables.create()
+        }
+    }
 }

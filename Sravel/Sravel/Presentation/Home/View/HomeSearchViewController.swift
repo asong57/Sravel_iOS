@@ -82,6 +82,7 @@ extension HomeSearchViewController: UISearchBarDelegate {
         searchController.isActive = false
         searchDataArr.insert(searchText, at: 0)
         resultTableView.reloadData()
+        
     }
 
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
